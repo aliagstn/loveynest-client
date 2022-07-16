@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -38,15 +37,15 @@ export default function OnBoardScreen({ navigation }) {
       <View style={{ flex: 1, justifyContent: "flex-end", paddingBottom: 40 }}>
         <TouchableOpacity
           style={style.btnLogin}
-          onPress={() => navigation.navigate("HomeScreen")}
+          onPress={() => navigation.navigate("LoginScreen")}
         >
-          <Text style={{ color: COLORS.white, fontSize: 16 }}>Login</Text>
+          <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "600", }}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[style.btnRegister, { marginTop: 10 }]}
-          onPress={() => navigation.navigate("HomeScreen")}
+          onPress={() => navigation.navigate("RegisterScreen")}
         >
-          <Text style={{ color: COLORS.black }}>Register</Text>
+          <Text style={{ color: COLORS.black, fontSize: 16, fontWeight: "600", }}>Register</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -63,22 +62,6 @@ const style = StyleSheet.create({
     height: 420,
     width: "100%",
     borderBottomLeftRadius: 100,
-  },
-  indicatorContainer: {
-    height: 20,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  indicator: {
-    height: 3,
-    width: 50,
-    backgroundColor: COLORS.grey,
-    marginHorizontal: 5,
-    borderRadius: 5,
-  },
-  indicatorActive: {
-    backgroundColor: COLORS.dark,
   },
   title: {
     fontSize: 32,

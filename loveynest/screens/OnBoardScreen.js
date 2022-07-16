@@ -7,10 +7,13 @@ import {
   Text,
   Pressable,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import COLORS from "../consts/colors";
 import { StatusBar } from "expo-status-bar";
 
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 export default function OnBoardScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -20,7 +23,7 @@ export default function OnBoardScreen({ navigation }) {
         style={style.image}
         resizeMode={"cover"}
       />
-      <View style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 20 }}>
+      <View style={{ paddingHorizontal: 20, paddingTop: windowHeight <= 750 ? 8 : 20, marginTop: 20 }}>
         <View>
           <Text style={style.title}>Loveynest</Text>
         </View>
@@ -39,13 +42,21 @@ export default function OnBoardScreen({ navigation }) {
           style={style.btnLogin}
           onPress={() => navigation.navigate("LoginScreen")}
         >
-          <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "600", }}>Login</Text>
+          <Text
+            style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+          >
+            Login
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[style.btnRegister, { marginTop: 10 }]}
           onPress={() => navigation.navigate("RegisterScreen")}
         >
-          <Text style={{ color: COLORS.black, fontSize: 16, fontWeight: "600", }}>Register</Text>
+          <Text
+            style={{ color: COLORS.black, fontSize: 16, fontWeight: "600" }}
+          >
+            Register
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -59,17 +70,17 @@ const style = StyleSheet.create({
     padding: 10,
   },
   image: {
-    height: 420,
+    height: windowHeight <= 750 ? 400 : 420,
     width: "100%",
     borderBottomLeftRadius: 100,
   },
   title: {
-    fontSize: 32,
+    fontSize: windowHeight <= 750 ? 28 : 32,
     fontWeight: "bold",
     color: "#4b5563",
   },
   textStyle: {
-    fontSize: 16,
+    fontSize: windowHeight <= 750 ? 14 : 16,
     color: "#9ca3af",
   },
   btnLogin: {
@@ -81,7 +92,7 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   btnRegister: {
-    height: 60,
+    height:  60,
     marginHorizontal: 20,
     backgroundColor: COLORS.white,
     borderRadius: 15,

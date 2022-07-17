@@ -6,13 +6,14 @@ import OnBoardScreen from "./screens/OnBoardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import InputNameScreen from "./screens/InputNameScreen";
+import ChatScreen from "./screens/ChatScreen";
 const Stack = createNativeStackNavigator();
-
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
         <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />

@@ -12,7 +12,6 @@ import {
 import COLORS from "../consts/colors";
 import { StatusBar } from "expo-status-bar";
 
-const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 export default function OnBoardScreen({ navigation }) {
   return (

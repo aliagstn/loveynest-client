@@ -8,6 +8,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import InputNameScreen from "./screens/InputNameScreen";
 import UploadPhotoProfile from "./screens/UploadPhotoProfile";
 import InputCode from "./screens/InputCode";
+import ChatScreen from "./screens/ChatScreen";
 import TabNavigation from "./screens/TabNavigation";
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
           />
           <Stack.Screen name="InputCode" component={InputCode} />
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          <Stack.Screen name="ChatScreen" component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );

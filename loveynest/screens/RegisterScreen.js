@@ -15,30 +15,25 @@ export default function RegisterScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity style={style.headerBtn}>
+      <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
         <Ionicons
           name="chevron-back-outline"
           size={30}
           color={"#475569"}
-          onPress={navigation.goBack}
         />
       </TouchableOpacity>
       <View style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 125 }}>
         <View>
           <Text style={style.title}>Hello! Register to get started</Text>
         </View>
-        <View style={[style.inputContainer, { marginTop: 40 }]}>
           <TextInput
             placeholder="Enter your email"
-            style={{ marginLeft: 8, fontSize: 16 }}
+            style={[style.inputContainer, { marginTop: 40, fontSize: 16 }]}
           />
-        </View>
-        <View style={style.inputContainer}>
           <TextInput
             placeholder="Enter your password"
-            style={{ marginLeft: 8, fontSize: 16 }}
+            style={[style.inputContainer, { fontSize: 16 }]}
           />
-        </View>
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity
             style={style.btnLogin}

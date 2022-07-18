@@ -125,6 +125,7 @@ export default function TabNavigation({ navigation }) {
             name={item.route}
             component={item.component}
             options={{
+              tabBarStyle: {display: item.route === "Chat" ? "none" : "flex"},
               tabBarShowLabel: false,
               tabBarButton: (props) => <TabButton {...props} item={item} />,
             }}

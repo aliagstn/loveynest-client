@@ -6,12 +6,14 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Dimensions
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import * as Clipboard from "expo-clipboard";
 
+const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation }) {
   const [copiedText, setCopiedText] = React.useState("");
 
@@ -34,7 +36,7 @@ export default function InputCode({ navigation }) {
         style={{
           paddingHorizontal: 20,
           paddingTop: 20,
-          marginTop: 100,
+          marginTop: windowHeight <= 750 ? 90 : 100,
           flex: 1,
           marginBottom: 10,
         }}
@@ -105,7 +107,7 @@ const style = StyleSheet.create({
     borderWidth: 0.7,
   },
   title: {
-    fontSize: 31,
+    fontSize: windowHeight <= 750 ? 25 : 32,
     fontWeight: "bold",
     color: "#334155",
   },

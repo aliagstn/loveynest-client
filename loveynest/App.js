@@ -10,6 +10,7 @@ import UploadPhotoProfile from "./screens/UploadPhotoProfile";
 import InputCode from "./screens/InputCode";
 import ChatScreen from "./screens/ChatScreen";
 import TabNavigation from "./screens/TabNavigation";
+import HomeScreen from "./screens/HomeScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -25,8 +26,9 @@ export default function App() {
             component={UploadPhotoProfile}
           />
           <Stack.Screen name="InputCode" component={InputCode} />
-          <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
+          <Stack.Screen name="TabNavigation" component={TabNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
   );

@@ -43,7 +43,6 @@ const style = StyleSheet.create({
     borderRadius: 15,
     marginRight: 20,
     overflow: "hidden",
-    borderRadius: 10,
     padding: 10,
   },
 });

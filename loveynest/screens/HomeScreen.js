@@ -11,7 +11,6 @@ import {
   View,
   ImageBackground,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "../consts/colors";
 import Card from "../components/Card";
 import { StatusBar } from "expo-status-bar";
@@ -190,10 +189,8 @@ const style = StyleSheet.create({
     marginRight: 20,
     padding: 10,
     overflow: "hidden",
-    borderRadius: 10,
   },
   uploadBtn: {
-    // backgroundColor: "rgba(52, 52, 52, 0.1)",
     marginTop: 25,
     marginRight: 60,
     marginLeft: 15,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,12 +6,42 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/actions/userAction";
 
 export default function OnBoardScreen({ navigation }) {
+  const dispatch = useDispatch()
+  const userData = useSelector((state) => state.user.user)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const logginIn = () => {
+    dispatch(login({email, password}))
+      .then((id) => {
+        console.log(id)
+        // console.log(userData, "<<< dari use selector")
+        navigation.navigate("InputNameScreen", {id})
+      })
+      .catch((err) => {
+        console.log(err)
+        Alert.alert(
+          "Error Invalid Input",
+          "Please input a valid email and password ♡",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        )
+      })
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -29,15 +59,18 @@ export default function OnBoardScreen({ navigation }) {
         <TextInput
             placeholder="Enter your email"
             style={[style.inputContainer, { marginTop: 40, fontSize: 16 }]}
+            onChangeText={setEmail}
           />
           <TextInput
+          secureTextEntry={true}
             placeholder="Enter your password"
             style={[style.inputContainer, { fontSize: 16 }]}
+            onChangeText={setPassword}
           />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity
             style={style.btnLogin}
-            onPress={() => navigation.navigate("InputNameScreen")}
+            onPress={logginIn}
           >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}

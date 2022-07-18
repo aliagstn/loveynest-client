@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,35 +10,77 @@ import {
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch } from "react-redux";
+import { register } from "../store/actions/userAction";
 
 export default function RegisterScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const registeringUser = () => {
+    if (!email || !email.includes("@") || !email.includes(".com")) {
+      setErrorEmail(true);
+    }
+    if (!password || password.length < 8) {
+      setErrorPassword(true);
+    }
+    const userData = {
+      email,
+      password
+    }
+    dispatch(register(userData))
+      .then(() => {
+        navigation.navigate("LoginScreen")
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
       <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
-        <Ionicons
-          name="chevron-back-outline"
-          size={30}
-          color={"#475569"}
-        />
+        <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
       <View style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 125 }}>
         <View>
           <Text style={style.title}>Hello! Register to get started</Text>
         </View>
+        {errorEmail ? (
+          <TextInput
+            placeholder="Enter your valid email"
+            placeholderTextColor={"red"}
+            style={[style.inputContainer, { marginTop: 40, fontSize: 16 }]}
+            onChangeText={setEmail}
+          />
+        ) : (
           <TextInput
             placeholder="Enter your email"
             style={[style.inputContainer, { marginTop: 40, fontSize: 16 }]}
+            onChangeText={setEmail}
           />
+        )}
+        {errorPassword ? (
           <TextInput
+            secureTextEntry={true}
+            placeholder="Password should have at least 6 characters"
+            placeholderTextColor={"red"}
+            style={[style.inputContainer, { fontSize: 16 }]}
+            onChangeText={setPassword}
+          />
+        ) : (
+          <TextInput
+            secureTextEntry={true}
             placeholder="Enter your password"
             style={[style.inputContainer, { fontSize: 16 }]}
+            onChangeText={setPassword}
           />
+        )}
+
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
-          <TouchableOpacity
-            style={style.btnLogin}
-            onPress={() => navigation.navigate("LoginScreen")}
-          >
+          <TouchableOpacity style={style.btnLogin} onPress={registeringUser}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >

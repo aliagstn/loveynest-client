@@ -5,14 +5,26 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "../consts/colors";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updatingUserData,
+  uploadUserPhotoProfile,
+} from "../store/actions/userAction";
 
-export default function UploadPhotoProfile({ navigation }) {
-  const [image, setImage] = useState(null);
+export default function UploadPhotoProfile({ navigation, route }) {
+  const { nickname, id } = route.params;
+  const [image, setImage] = useState("");
+  const [imgBase64, setImageBase64] = useState("");
+  const [imageUploadedToCloudinary, setImageUploadedToCloudinary] =
+    useState(false);
+  const dispatch = useDispatch();
+  const [theProfilePicture, setTheProfilePicture] = useState("");
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -21,23 +33,52 @@ export default function UploadPhotoProfile({ navigation }) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true,
     });
 
-    console.log(result);
+    // console.log(result.base64);
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setImageBase64(`data:image/jpg;base64,${result.base64}`);
     }
+  };
+
+  const deleteImage = () => {
+    setImage("");
+  };
+
+  const uploadingPhotoProfile = () => {
+    dispatch(uploadUserPhotoProfile(imgBase64))
+      .then((data) => {
+        setImageUploadedToCloudinary(true);
+        setTheProfilePicture(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // navigation.navigate("InputCode")
+  };
+
+  const updatingProfilePictureUser = () => {
+    console.log(theProfilePicture);
+    console.log(id);
+    console.log(nickname, "nickname");
+    dispatch(
+      updatingUserData({ id, nickname, photoProfile: theProfilePicture })
+    )
+      .then(() => {
+        navigation.navigate("InputCode", {id});
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
       <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
-        <Ionicons
-          name="chevron-back-outline"
-          size={30}
-          color={"#475569"}
-        />
+        <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
       <View style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 125 }}>
         <View>
@@ -55,33 +96,62 @@ export default function UploadPhotoProfile({ navigation }) {
             marginTop: 40,
           }}
         >
-          {image && (
-            <Image source={{ uri: image }} style={style.imageProfile} />
+          {image ? (
+            <View style={{ flexDirection: "row" }}>
+              <Image source={{ uri: image }} style={style.imageProfile} />
+              <TouchableOpacity onPress={pickImage}>
+                <Ionicons name="create" color={"#94a3b8"} size={25} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={deleteImage}>
+                <Ionicons name="trash" color={"#94a3b8"} size={25} />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity style={style.uploadBtn} onPress={pickImage}>
+              <Ionicons name="add-circle-outline" color={"#94a3b8"} size={50} />
+            </TouchableOpacity>
           )}
-          <TouchableOpacity style={style.uploadBtn} onPress={pickImage}>
-            <Ionicons name="add-circle-outline" color={"#94a3b8"} size={50} />
-          </TouchableOpacity>
         </View>
-        <View
-        style={{
-          flex: 1,
-          paddingBottom: 40,
-          marginTop: 40
-        }}
-      >
-        <TouchableOpacity
-          style={style.btnLogin}
-          onPress={() => navigation.navigate("InputCode")}
-        >
-          <Text
-            style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+        {imageUploadedToCloudinary ? (
+          <View
+            style={{
+              flex: 1,
+              paddingBottom: 40,
+              marginTop: 40,
+            }}
           >
-            Continue
-          </Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={style.btnLogin}
+              onPress={updatingProfilePictureUser}
+            >
+              <Text
+                style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+              >
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              paddingBottom: 40,
+              marginTop: 40,
+            }}
+          >
+            <TouchableOpacity
+              style={style.btnLogin}
+              onPress={uploadingPhotoProfile}
+            >
+              <Text
+                style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+              >
+                Upload
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
-      </View>
-      
     </SafeAreaView>
   );
 }
@@ -101,10 +171,9 @@ const style = StyleSheet.create({
     borderWidth: 0.7,
   },
   imageProfile: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 50,
-    marginBottom: 10,
     justifyContent: "center",
     borderColor: "#d1d5db",
     borderWidth: 0.9,

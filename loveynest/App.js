@@ -11,10 +11,13 @@ import InputCode from "./screens/InputCode";
 import ChatScreen from "./screens/ChatScreen";
 import TabNavigation from "./screens/TabNavigation";
 import HomeScreen from "./screens/HomeScreen";
+import { Provider } from "react-redux";
+import store from "./store";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -31,5 +34,6 @@ export default function App() {
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
+    </Provider>
   );
 }

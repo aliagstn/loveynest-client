@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,12 +11,18 @@ import {
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useSelector, useDispatch } from "react-redux";
 import * as Clipboard from "expo-clipboard";
 
 const windowHeight = Dimensions.get("window").height;
-export default function InputCode({ navigation }) {
+export default function InputCode({ navigation, route }) {
+  const {id} = route.params
+  const dispatch = useDispatch()
+  const userData = useSelector((state) => state.user.userData)
   const [copiedText, setCopiedText] = React.useState("");
-
+  useEffect(() => {
+    
+  }, [])
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync("DRF-C6F");
   };
@@ -48,7 +54,7 @@ export default function InputCode({ navigation }) {
           value="DRF-C6F"
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
         />
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+        {/* <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity style={style.btnLogin} onPress={copyToClipboard}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
@@ -56,14 +62,13 @@ export default function InputCode({ navigation }) {
               Copy my code
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
 
       <View
         style={{
           paddingHorizontal: 20,
           paddingTop: 10,
-          marginTop: 100,
           flex: 2,
           backgroundColor: "#E8ECF4",
           borderTopLeftRadius: 40,

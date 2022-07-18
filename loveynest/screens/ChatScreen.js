@@ -12,7 +12,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import { db } from "../firebase";
 
-export default function ChatScreen() {
+export default function Chat() {
   const [messages, setMessages] = useState([]);
   const partnerData = {
     username: "jodohnya alia",
@@ -127,16 +127,9 @@ export default function ChatScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white}}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
       {/* <Button title="Add Topic" onPress={addTopic} /> */}
-        <Image
-          source={partnerData.avatar}
-          style={{
-            width: 10,
-            height: 10,
-          }}
-        />
         <Text
           style={{
             textAlign: "center",

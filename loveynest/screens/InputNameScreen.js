@@ -23,6 +23,7 @@ export default function InputNameScreen({ navigation, route }) {
     try {
       userData.nickname = nickname
       dispatch(userLoggedInSuccess(userData))
+      console.log(id, "<<di input name")
       navigation.navigate("UploadPhotoProfile", {nickname, id})      
     } catch (err) {
       console.log(err)

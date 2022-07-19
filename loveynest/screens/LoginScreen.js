@@ -27,6 +27,7 @@ export default function OnBoardScreen({ navigation }) {
         // console.log(userData, "<<< dari use selector")
         storeData(data)
         const id = data.id
+        console.log(data)
         if(!data.nickname){
           navigation.navigate("InputNameScreen", {id})
         }else if(!data.photoProfile){

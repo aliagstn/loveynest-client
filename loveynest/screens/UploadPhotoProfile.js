@@ -16,6 +16,7 @@ import {
   updatingUserData,
   uploadUserPhotoProfile,
 } from "../store/actions/userAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UploadPhotoProfile({ navigation, route }) {
   const { nickname, id } = route.params;
@@ -60,19 +61,26 @@ export default function UploadPhotoProfile({ navigation, route }) {
     // navigation.navigate("InputCode")
   };
 
-  const updatingProfilePictureUser = () => {
-    console.log(theProfilePicture);
-    console.log(id);
-    console.log(nickname, "nickname");
-    dispatch(
-      updatingUserData({ id, nickname, photoProfile: theProfilePicture })
-    )
-      .then(() => {
-        navigation.navigate("InputCode", {id});
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const updatingProfilePictureUser = async () => {
+    // console.log(theProfilePicture);
+    // console.log(id);
+    // console.log(nickname, "nickname");
+    try {
+      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      // console.log(access_token, "<<<<<<<")
+      console.log(nickname, id)
+      dispatch(
+        updatingUserData({ id, nickname, photoProfile: theProfilePicture, access_token })
+      )
+        .then(() => {
+          navigation.navigate("InputCode", {id});
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error)
+    }
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>

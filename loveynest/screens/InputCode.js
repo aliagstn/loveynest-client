@@ -54,7 +54,6 @@ export default function InputCode({ navigation, route }) {
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(userCode);
   };
-<<<<<<< HEAD
   const updatingPartnerCodeForUser = async () => {
     try {
       const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
@@ -69,17 +68,6 @@ export default function InputCode({ navigation, route }) {
     } catch (error) {
       console.log(error)
     }
-=======
-  const updatingPartnerCodeForUser = () => {
-    dispatch(updatePartnerCode(id, inputPartnerCode))
-      .then(() => {
-        storeData(userData);
-        navigation.navigate("TabNavigation");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
->>>>>>> 9b394df42aeea3740e0b97166ce5e46d727b7ae9
   };
   const storeData = async (userInformation) => {
     try {

@@ -35,7 +35,7 @@ export default function InputCode({ navigation, route }) {
   useEffect(() => {
     dispatch(fetchDataUser(id))
       .then((data) => {
-        console.log(data);
+        // console.log(data, "<<< di input code")
         setUserCode(data?.userCode);
         if (data?.partnerCode) {
           storeData(data);

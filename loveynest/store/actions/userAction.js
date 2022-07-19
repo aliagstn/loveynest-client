@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "https://4c5b-180-252-243-64.ngrok.io";
+const baseUrl = "http://3de4-103-105-104-34.ngrok.io";
 
 // register user
 export const register = ({ email, password }) => {
@@ -81,10 +81,11 @@ export const uploadUserPhotoProfile = (img) => {
 };
 
 // update user nickname and profile picture
-export const updatingUserData = ({ id, nickname, photoProfile }) => {
+export const updatingUserData = ({ id, nickname, photoProfile, access_token }) => {
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(id)
         const response = await axios({
           method: "PATCH",
           url: `${baseUrl}/users/${id}`,
@@ -92,8 +93,12 @@ export const updatingUserData = ({ id, nickname, photoProfile }) => {
             nickname,
             photoProfile,
           },
+          headers:{
+            access_token
+          }
         });
-        console.log(response.data.data);
+        // console.log(response.data.data);
+
         await dispatch(userLoggedInSuccess(response.data.data));
         resolve();
       } catch (error) {
@@ -114,11 +119,12 @@ export const fetchDataUser = (id) => {
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(id)
         const response = await axios({
           method: "GET",
           url: `${baseUrl}/users/${id}`,
         });
-        //   console.log(response.data.data)
+          console.log(response.data.data, "<<<< fetch data user")
         await dispatch(userDataFetchedSuccess(response.data.data));
         resolve(response.data.data);
       } catch (error) {
@@ -139,7 +145,6 @@ export const fetchAllCouples = () => {
               method: "GET",
               url: `${baseUrl}/couple`,
             });
-              console.log(response.data.data)
             resolve(response.data.data);
           } catch (error) {
             console.log(error);
@@ -211,7 +216,7 @@ export const getAllTopics = (access_token) => {
             access_token
           }
         });
-          console.log(response.data)
+          console.log(response.data, "get all topics")
         resolve(response.data);
       } catch (error) {
         console.log(error);

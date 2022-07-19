@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import COLORS from "../consts/colors";
-const ITEM_MARGIN_BOTTOM = 20;
+const ITEM_MARGIN_BOTTOM = 30;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
 const { width } = Dimensions.get("screen");
@@ -18,7 +18,7 @@ const CardAnswered = ({ product, navigation }) => {
     <View style={[style.item]}>
       <Image
         style={style.image}
-        source={require("../assets/love.gif")}
+        source={require("../assets/love.png")}
         resizeMode="contain"
       />
       <Image

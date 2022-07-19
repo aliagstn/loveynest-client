@@ -15,24 +15,33 @@ import COLORS from "../consts/colors";
 import Card from "../components/Card";
 import { StatusBar } from "expo-status-bar";
 import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { getAllTopics } from "../store/actions/userAction";
 
 const { width } = Dimensions.get("screen");
 
 export default function HomeScreen({ navigation }) {
-  const [products, setProducts] = useState([]);
+  const [topics, setTopics] = useState([]);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    async function fetch() {
-      try {
-        const data = await axios.get("https://server-addict.herokuapp.com/pub");
-        setProducts(data.data.data);
-        setIsLoading(true);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetch();
+    getDataTopics()
   }, []);
+  const getDataTopics = async () => {
+    try {
+      const access_token = await AsyncStorage.getItem("access_token");
+      dispatch(getAllTopics(JSON.parse(access_token)))
+        .then((data) => {
+          setTopics(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error)
+    }
+  };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <StatusBar
@@ -65,7 +74,7 @@ export default function HomeScreen({ navigation }) {
           contentContainerStyle={{ paddingLeft: 20, paddingVertical: 20 }}
           showsHorizontalScrollIndicator={false}
           horizontal
-          data={products}
+          data={topics}
           renderItem={({ item }) => (
             <Card product={item} navigation={navigation} />
           )}

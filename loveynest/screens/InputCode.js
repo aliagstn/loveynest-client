@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,19 +6,70 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useSelector, useDispatch } from "react-redux";
 import * as Clipboard from "expo-clipboard";
+import {
+  fetchAllCouples,
+  fetchDataPartner,
+  fetchDataUser,
+  updatePartnerCode,
+} from "../store/actions/userAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowHeight = Dimensions.get("window").height;
-export default function InputCode({ navigation }) {
+export default function InputCode({ navigation, route }) {
+  const { id } = route.params;
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.userData);
+  const [userCode, setUserCode] = useState("");
+  const [inputPartnerCode, setInputPartnerCode] = useState("");
   const [copiedText, setCopiedText] = React.useState("");
-
+  useEffect(() => {
+    dispatch(fetchDataUser(id))
+      .then((data) => {
+        console.log(data)
+        setUserCode(data?.userCode);
+        if (data?.partnerCode) {
+          storeData(data)
+          navigation.navigate("TabNavigation");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // const intervalId = setInterval(() => {
+    // }, 5000);
+    // return () => {
+    //   clearInterval(intervalId);
+    // };
+    // clearInterval()
+  }, [id]);
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync("DRF-C6F");
+    await Clipboard.setStringAsync(userCode);
+  };
+  const updatingPartnerCodeForUser = () => {
+    dispatch(updatePartnerCode(id, inputPartnerCode))
+      .then(() => {
+        storeData(userData)
+        navigation.navigate("TabNavigation");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const storeData = async (userInformation) => {
+    try {
+      await AsyncStorage.setItem("CoupleId", JSON.stringify(userInformation.CoupleId));
+      const jsonValue = JSON.stringify(userInformation);
+      await AsyncStorage.setItem("myData", jsonValue);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <SafeAreaView
@@ -45,7 +96,7 @@ export default function InputCode({ navigation }) {
           <Text style={style.title}>Share my code with my partner</Text>
         </View>
         <TextInput
-          value="DRF-C6F"
+          value={userCode}
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
         />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
@@ -63,8 +114,8 @@ export default function InputCode({ navigation }) {
         style={{
           paddingHorizontal: 20,
           paddingTop: 10,
-          marginTop: 100,
           flex: 2,
+          marginTop: 100,
           backgroundColor: "#E8ECF4",
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
@@ -76,9 +127,13 @@ export default function InputCode({ navigation }) {
         <TextInput
           placeholder="Enter code"
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
+          onChangeText={setInputPartnerCode}
         />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
-          <TouchableOpacity style={style.btnLogin} onPress={() => navigation.navigate("TabNavigation")}>
+          <TouchableOpacity
+            style={style.btnLogin}
+            onPress={updatingPartnerCodeForUser}
+          >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >

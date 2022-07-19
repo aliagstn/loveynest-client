@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,8 +10,24 @@ import {
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useSelector, useDispatch } from "react-redux";
+import { userLoggedInSuccess } from "../store/actions/userAction";
 
-export default function InputNameScreen({ navigation }) {
+export default function InputNameScreen({ navigation, route }) {
+  const {id} = route.params
+  const dispatch = useDispatch()
+  const [nickname, setNickname] = useState("")
+  const userData = useSelector((state) => state.user.user)
+
+  const inputNickname = async () => {
+    try {
+      userData.nickname = nickname
+      dispatch(userLoggedInSuccess(userData))
+      navigation.navigate("UploadPhotoProfile", {nickname, id})      
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -33,11 +49,12 @@ export default function InputNameScreen({ navigation }) {
             style.inputContainer,
             { marginTop: 40, fontSize: 16 },
           ]}
+          onChangeText={setNickname}
         />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity
             style={style.btnLogin}
-            onPress={() => navigation.navigate("UploadPhotoProfile")}
+            onPress={inputNickname}
           >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}

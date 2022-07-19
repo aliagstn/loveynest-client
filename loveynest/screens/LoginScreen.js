@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,12 +6,59 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/actions/userAction";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OnBoardScreen({ navigation }) {
+  const dispatch = useDispatch()
+  const userData = useSelector((state) => state.user.user)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const logginIn = () => {
+    dispatch(login({email, password}))
+      .then((data) => {
+        // console.log(id)
+        // console.log(userData, "<<< dari use selector")
+        storeData(data)
+        const id = data.id
+        if(!data.nickname){
+          navigation.navigate("InputNameScreen", {id})
+        }else if(!data.photoProfile){
+          const nickname = data.nickname
+          navigation.navigate("UploadPhotoProfile", {nickname, id})
+        }else{
+          navigation.navigate("InputCode", {id})
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        Alert.alert(
+          "Error Invalid Input",
+          "Please input a valid email and password ♡",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        )
+      })
+  }
+  const storeData = async (dataToStore) => {
+    try {
+      await AsyncStorage.setItem('access_token', JSON.stringify(dataToStore.access_token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -29,15 +76,18 @@ export default function OnBoardScreen({ navigation }) {
         <TextInput
             placeholder="Enter your email"
             style={[style.inputContainer, { marginTop: 40, fontSize: 16 }]}
+            onChangeText={setEmail}
           />
           <TextInput
+          secureTextEntry={true}
             placeholder="Enter your password"
             style={[style.inputContainer, { fontSize: 16 }]}
+            onChangeText={setPassword}
           />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity
             style={style.btnLogin}
-            onPress={() => navigation.navigate("InputNameScreen")}
+            onPress={logginIn}
           >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}

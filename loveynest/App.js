@@ -16,10 +16,13 @@ import TestQuizScreen from "./screens/TestQuizScreen";
 import StartQuizScreen from "./screens/StartQuizScreen";
 import TestQuestionScreen from "./screens/TestQuestionScreen";
 import AnsweredScreen from "./screens/AnsweredScreen";
+import { Provider } from "react-redux";
+import store from "./store";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -31,8 +34,8 @@ export default function App() {
             component={UploadPhotoProfile}
           />
           <Stack.Screen name="InputCode" component={InputCode} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="ChatScreen" component={ChatScreen} />
+          {/* <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="ChatScreen" component={ChatScreen} /> */}
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
           <Stack.Screen name="StartQuizScreen" component={StartQuizScreen} />
@@ -41,5 +44,6 @@ export default function App() {
           <Stack.Screen name="AnsweredScreen" component={AnsweredScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+    </Provider>
   );
 }

@@ -87,8 +87,8 @@ export default function OnBoardScreen({ navigation }) {
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity
             style={style.btnLogin}
-            // onPress={logginIn}
-            onPress={() => navigation.navigate("TabNavigation")}
+            onPress={logginIn}
+            // onPress={() => navigation.navigate("TabNavigation")}
           >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}

@@ -30,15 +30,6 @@ export default function AddQuestion({ navigation }) {
       <ScrollView
         style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 115 }}
       >
-        <View>
-          <View>
-            <Text style={style.title}>Title</Text>
-          </View>
-          <TextInput
-            placeholder="Enter title quiz"
-            style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
-          />
-        </View>
         <View style={{ marginTop: 20 }}>
           <View>
             <Text style={style.title}>Question</Text>
@@ -100,14 +91,14 @@ export default function AddQuestion({ navigation }) {
       </View>
         </View>
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40, flexDirection: 'row' }}>
-          <TouchableOpacity style={style.btnAdd}>
+          <TouchableOpacity style={style.btnAdd} onPress={() => navigation.navigate("AddQuestion3")}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >
               Add Question
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.btnSubmit}>
+          <TouchableOpacity style={style.btnSubmit} onPress={() => navigation.navigate("QuestionScreen")}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >
@@ -142,7 +133,7 @@ const style = StyleSheet.create({
   },
   underTitle: {
     marginTop: 18,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
     color: "#334155",
   },

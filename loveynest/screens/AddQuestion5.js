@@ -18,7 +18,7 @@ import RadioForm, {
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
 
-export default function FormQuiz({ navigation }) {
+export default function AddQuestion5({ navigation }) {
   const [checked, setChecked] = useState(0);
   var gender = ['Option A', 'Option B'];
   return (
@@ -30,15 +30,6 @@ export default function FormQuiz({ navigation }) {
       <ScrollView
         style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 115 }}
       >
-        <View>
-          <View>
-            <Text style={style.title}>Title</Text>
-          </View>
-          <TextInput
-            placeholder="Enter title quiz"
-            style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
-          />
-        </View>
         <View style={{ marginTop: 20 }}>
           <View>
             <Text style={style.title}>Question</Text>
@@ -99,14 +90,7 @@ export default function FormQuiz({ navigation }) {
         })}
       </View>
         </View>
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40, flexDirection: 'row' }}>
-          <TouchableOpacity style={style.btnAdd} onPress={() => navigation.navigate("AddQuestion")}>
-            <Text
-              style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
-            >
-              Add Question
-            </Text>
-          </TouchableOpacity>
+        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40}}>
           <TouchableOpacity style={style.btnSubmit} onPress={() => navigation.navigate("QuestionScreen")}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
@@ -162,15 +146,6 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    marginLeft: 10
-  },
-  btnAdd: {
-    height: 60,
-    backgroundColor: "#384BCB",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
   },
   radio: {
     flexDirection: 'row',

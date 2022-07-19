@@ -43,24 +43,28 @@ export default function InputCode({ navigation, route }) {
         console.log(err);
       });
     // const intervalId = setInterval(() => {
-    // }, 5000);
+    // }, 1000);
     // return () => {
     //   clearInterval(intervalId);
     // };
-    // clearInterval()
   }, [id]);
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(userCode);
   };
-  const updatingPartnerCodeForUser = () => {
-    dispatch(updatePartnerCode(id, inputPartnerCode))
-      .then(() => {
-        storeData(userData)
-        navigation.navigate("TabNavigation");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const updatingPartnerCodeForUser = async () => {
+    try {
+      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      dispatch(updatePartnerCode(id, inputPartnerCode, access_token))
+        .then(() => {
+          storeData(userData)
+          navigation.navigate("TabNavigation");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error)
+    }
   };
   const storeData = async (userInformation) => {
     try {

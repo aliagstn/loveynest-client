@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,25 +6,62 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import { useSelector, useDispatch } from "react-redux";
 import * as Clipboard from "expo-clipboard";
+import {
+  fetchAllCouples,
+  fetchDataPartner,
+  fetchDataUser,
+  updatePartnerCode,
+} from "../store/actions/userAction";
+// import { db } from "../firebase";
+import axios from "axios";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
-  const {id} = route.params
-  const dispatch = useDispatch()
-  const userData = useSelector((state) => state.user.userData)
+  const { id } = route.params;
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.userData);
+  const [userCode, setUserCode] = useState("");
+  const [inputPartnerCode, setInputPartnerCode] = useState("");
   const [copiedText, setCopiedText] = React.useState("");
   useEffect(() => {
-    
-  }, [])
+    dispatch(fetchDataUser(id))
+    .then((data) => {
+      console.log(data);
+      setUserCode(data?.userCode);
+      const isThereAnyPartnerCode = data?.partnerCode;
+      if (isThereAnyPartnerCode) {
+        console.log(isThereAnyPartnerCode);
+        navigation.navigate("TabNavigation");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    // const intervalId = setInterval(() => {
+    // }, 5000);
+    // return () => {
+    //   clearInterval(intervalId);
+    // };
+    // clearInterval()
+  }, [id]);
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync("DRF-C6F");
+    await Clipboard.setStringAsync(userCode);
+  };
+  const updatingPartnerCodeForUser = () => {
+    dispatch(updatePartnerCode(id, inputPartnerCode))
+      .then(() => {
+        navigation.navigate("TabNavigation");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <SafeAreaView
@@ -51,10 +88,10 @@ export default function InputCode({ navigation, route }) {
           <Text style={style.title}>Share my code with my partner</Text>
         </View>
         <TextInput
-          value="DRF-C6F"
+          value={userCode}
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
         />
-        {/* <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity style={style.btnLogin} onPress={copyToClipboard}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
@@ -62,7 +99,7 @@ export default function InputCode({ navigation, route }) {
               Copy my code
             </Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
 
       <View
@@ -70,6 +107,7 @@ export default function InputCode({ navigation, route }) {
           paddingHorizontal: 20,
           paddingTop: 10,
           flex: 2,
+          marginTop: 100,
           backgroundColor: "#E8ECF4",
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
@@ -81,9 +119,13 @@ export default function InputCode({ navigation, route }) {
         <TextInput
           placeholder="Enter code"
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
+          onChangeText={setInputPartnerCode}
         />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
-          <TouchableOpacity style={style.btnLogin} onPress={() => navigation.navigate("TabNavigation")}>
+          <TouchableOpacity
+            style={style.btnLogin}
+            onPress={updatingPartnerCodeForUser}
+          >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >

@@ -12,8 +12,9 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { COLORS, SIZES } from "../constants";
-import data from "../data/QuizData";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import data from "../data/QuizData";
+
 
 export default function TestQuizScreen({ navigation }) {
   const allQuestions = data;

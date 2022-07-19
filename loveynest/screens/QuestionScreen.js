@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Dimensions,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import COLORS from "../consts/colors";
 import { StatusBar } from "expo-status-bar";
@@ -41,23 +42,46 @@ export default function QuestionScreen({ navigation }) {
         barStyle="dark-content"
       />
       <View
-        style={{ marginHorizontal: 10, marginTop: 20, paddingBottom: 15, flexDirection: "row" }}
+        style={{
+          marginHorizontal: 10,
+          marginTop: 20,
+          paddingBottom: 15,
+          flexDirection: "row",
+        }}
       >
         <Ionicons
-          onPress={navigation.goBack}
+          onPress={() => navigation.navigate("TabNavigation")}
           name="chevron-back-outline"
           size={30}
           color={"#475569"}
         />
         <Text style={style.title}>Questions</Text>
       </View>
-      <ScrollView>
-        {products.map((item, index) => {
-          return (
-            <CardQuestions product={item} navigation={navigation} key={index} />
-          )
-        })}
-      </ScrollView>
+      {!isLoading && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 250,
+          }}
+        >
+          <ActivityIndicator size={70} color={COLORS.dark} />
+        </View>
+      )}
+
+      {isLoading && (
+        <ScrollView>
+          {products.map((item, index) => {
+            return (
+              <CardQuestions
+                product={item}
+                navigation={navigation}
+                key={index}
+              />
+            );
+          })}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  // KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -20,6 +22,7 @@ import {
   updatePartnerCode,
 } from "../store/actions/userAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
@@ -35,7 +38,7 @@ export default function InputCode({ navigation, route }) {
         // console.log(data, "<<< di input code")
         setUserCode(data?.userCode);
         if (data?.partnerCode) {
-          storeData(data)
+          storeData(data);
           navigation.navigate("TabNavigation");
         }
       })
@@ -55,7 +58,7 @@ export default function InputCode({ navigation, route }) {
   const updatingPartnerCodeForUser = () => {
     dispatch(updatePartnerCode(id, inputPartnerCode))
       .then(() => {
-        storeData(userData)
+        storeData(userData);
         navigation.navigate("TabNavigation");
       })
       .catch((err) => {
@@ -64,7 +67,10 @@ export default function InputCode({ navigation, route }) {
   };
   const storeData = async (userInformation) => {
     try {
-      await AsyncStorage.setItem("CoupleId", JSON.stringify(userInformation.CoupleId));
+      await AsyncStorage.setItem(
+        "CoupleId",
+        JSON.stringify(userInformation.CoupleId)
+      );
       const jsonValue = JSON.stringify(userInformation);
       await AsyncStorage.setItem("myData", jsonValue);
     } catch (error) {
@@ -72,7 +78,7 @@ export default function InputCode({ navigation, route }) {
     }
   };
   return (
-    <SafeAreaView
+    <KeyboardAwareScrollView
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
@@ -83,6 +89,7 @@ export default function InputCode({ navigation, route }) {
       <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
         <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
+
       <View
         style={{
           paddingHorizontal: 20,
@@ -97,6 +104,7 @@ export default function InputCode({ navigation, route }) {
         </View>
         <TextInput
           value={userCode}
+          // value={"LV-1232672"}
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
         />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
@@ -115,7 +123,6 @@ export default function InputCode({ navigation, route }) {
           paddingHorizontal: 20,
           paddingTop: 10,
           flex: 2,
-          marginTop: 100,
           backgroundColor: "#E8ECF4",
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
@@ -127,6 +134,7 @@ export default function InputCode({ navigation, route }) {
         <TextInput
           placeholder="Enter code"
           style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
+          
           onChangeText={setInputPartnerCode}
         />
         <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
@@ -142,7 +150,7 @@ export default function InputCode({ navigation, route }) {
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 }
 

@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Card from "../components/Card";
@@ -26,7 +27,7 @@ export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    getDataTopics()
+    getDataTopics();
   }, []);
   const getDataTopics = async () => {
     try {
@@ -34,12 +35,13 @@ export default function HomeScreen({ navigation }) {
       dispatch(getAllTopics(JSON.parse(access_token)))
         .then((data) => {
           setTopics(data);
+          setIsLoading(true);
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   return (
@@ -69,17 +71,36 @@ export default function HomeScreen({ navigation }) {
         <View style={{ marginHorizontal: 20 }}>
           <Text style={style.title}>Daily Conversation</Text>
         </View>
-        <FlatList
-          snapToInterval={width - 20}
-          contentContainerStyle={{ paddingLeft: 20, paddingVertical: 20 }}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          data={topics}
-          renderItem={({ item }) => (
-            <Card product={item} navigation={navigation} />
-          )}
-          keyExtractor={(item) => item.id}
-        ></FlatList>
+        {!isLoading && (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 30,
+            }}
+          >
+            <ImageBackground
+              style={style.cardImageLoad}
+            >
+              <ActivityIndicator size={70} color={COLORS.dark} style={{marginTop: 40}} />
+            </ImageBackground>
+          </View>
+        )}
+
+        {isLoading && (
+          <FlatList
+            snapToInterval={width - 20}
+            contentContainerStyle={{ paddingLeft: 20, paddingVertical: 20 }}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={topics}
+            renderItem={({ item }) => (
+              <Card product={item} navigation={navigation} />
+            )}
+            keyExtractor={(item) => item.id}
+          ></FlatList>
+        )}
+
         <View style={{ marginHorizontal: 20, marginTop: 23 }}>
           <Text style={style.title}>Weekly Quizzes</Text>
         </View>
@@ -115,7 +136,7 @@ export default function HomeScreen({ navigation }) {
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("FormQuiz")}
           style={{ marginHorizontal: 20, marginTop: 50, marginBottom: 70 }}
         >
           <ImageBackground
@@ -126,7 +147,7 @@ export default function HomeScreen({ navigation }) {
           >
             <View
               style={style.uploadBtn}
-              onPress={() => navigation.navigate("ChatScreen")}
+              onPress={() => navigation.navigate("FormQuiz")}
             >
               <Text
                 style={{
@@ -149,7 +170,7 @@ export default function HomeScreen({ navigation }) {
 
 const style = StyleSheet.create({
   header: {
-    paddingVertical: 20,
+    paddingVertical: 30,
     marginTop: 3,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -191,6 +212,17 @@ const style = StyleSheet.create({
     padding: 10,
     overflow: "hidden",
     borderRadius: 10,
+  },
+  cardImageLoad: {
+    height: 180,
+    width: width / 1.12,
+    borderRadius: 15,
+    marginRight: 20,
+    marginLeft: 20,
+    padding: 10,
+    overflow: "hidden",
+    borderRadius: 10,
+    backgroundColor: '#F3F3F3'
   },
   cardQuiz: {
     height: 220,

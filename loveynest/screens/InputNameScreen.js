@@ -37,7 +37,7 @@ export default function InputNameScreen({ navigation, route }) {
       </TouchableOpacity>
       <View style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 125 }}>
         <View>
-          <Text style={style.title}>What’s your first name?</Text>
+          <Text style={style.title}>What’s your nick name?</Text>
         </View>
         <View>
           <Text style={style.underTitle}>
@@ -45,7 +45,7 @@ export default function InputNameScreen({ navigation, route }) {
           </Text>
         </View>
         <TextInput
-          placeholder="Enter your name"
+          placeholder="Enter your nick name"
           style={[
             style.inputContainer,
             { marginTop: 40, fontSize: 16 },

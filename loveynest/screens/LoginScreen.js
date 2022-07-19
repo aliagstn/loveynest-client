@@ -13,6 +13,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/actions/userAction";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OnBoardScreen({ navigation }) {
   const dispatch = useDispatch()
@@ -21,10 +22,19 @@ export default function OnBoardScreen({ navigation }) {
   const [password, setPassword] = useState("")
   const logginIn = () => {
     dispatch(login({email, password}))
-      .then((id) => {
-        console.log(id)
+      .then((data) => {
+        // console.log(id)
         // console.log(userData, "<<< dari use selector")
-        navigation.navigate("InputNameScreen", {id})
+        storeData(data)
+        const id = data.id
+        if(!data.nickname){
+          navigation.navigate("InputNameScreen", {id})
+        }else if(!data.photoProfile){
+          const nickname = data.nickname
+          navigation.navigate("UploadPhotoProfile", {nickname, id})
+        }else{
+          navigation.navigate("InputCode", {id})
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -41,6 +51,13 @@ export default function OnBoardScreen({ navigation }) {
           ]
         )
       })
+  }
+  const storeData = async (dataToStore) => {
+    try {
+      await AsyncStorage.setItem('access_token', JSON.stringify(dataToStore.access_token))
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>

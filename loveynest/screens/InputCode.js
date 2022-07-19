@@ -19,8 +19,7 @@ import {
   fetchDataUser,
   updatePartnerCode,
 } from "../store/actions/userAction";
-// import { db } from "../firebase";
-import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
@@ -32,18 +31,17 @@ export default function InputCode({ navigation, route }) {
   const [copiedText, setCopiedText] = React.useState("");
   useEffect(() => {
     dispatch(fetchDataUser(id))
-    .then((data) => {
-      console.log(data);
-      setUserCode(data?.userCode);
-      const isThereAnyPartnerCode = data?.partnerCode;
-      if (isThereAnyPartnerCode) {
-        console.log(isThereAnyPartnerCode);
-        navigation.navigate("TabNavigation");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((data) => {
+        console.log(data)
+        setUserCode(data?.userCode);
+        if (data?.partnerCode) {
+          storeData(data)
+          navigation.navigate("TabNavigation");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // const intervalId = setInterval(() => {
     // }, 5000);
     // return () => {
@@ -57,11 +55,21 @@ export default function InputCode({ navigation, route }) {
   const updatingPartnerCodeForUser = () => {
     dispatch(updatePartnerCode(id, inputPartnerCode))
       .then(() => {
+        storeData(userData)
         navigation.navigate("TabNavigation");
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+  const storeData = async (userInformation) => {
+    try {
+      await AsyncStorage.setItem("CoupleId", JSON.stringify(userInformation.CoupleId));
+      const jsonValue = JSON.stringify(userInformation);
+      await AsyncStorage.setItem("myData", jsonValue);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <SafeAreaView

@@ -52,7 +52,7 @@ export default function AnsweredScreen({ navigation }) {
       />
 
       <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
+      <TouchableOpacity style={style.headerBtn} onPress={() => navigation.navigate("TabNavigation")}>
         <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
 

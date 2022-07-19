@@ -11,7 +11,6 @@ import {
   View,
   ImageBackground,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "../consts/colors";
 import Card from "../components/Card";
 import { StatusBar } from "expo-status-bar";
@@ -76,7 +75,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={style.title}>Weekly Quizzes</Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("StartQuizScreen")}
           style={{ marginHorizontal: 20, marginTop: 20 }}
         >
           <ImageBackground
@@ -108,7 +107,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("ChatScreen")}
-          style={{ marginHorizontal: 20, marginTop: 50, marginBottom: 100 }}
+          style={{ marginHorizontal: 20, marginTop: 50, marginBottom: 70 }}
         >
           <ImageBackground
             style={style.cardImage}
@@ -142,6 +141,7 @@ export default function HomeScreen({ navigation }) {
 const style = StyleSheet.create({
   header: {
     paddingVertical: 20,
+    marginTop: 3,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
@@ -190,10 +190,8 @@ const style = StyleSheet.create({
     marginRight: 20,
     padding: 10,
     overflow: "hidden",
-    borderRadius: 10,
   },
   uploadBtn: {
-    // backgroundColor: "rgba(52, 52, 52, 0.1)",
     marginTop: 25,
     marginRight: 60,
     marginLeft: 15,

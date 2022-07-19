@@ -11,6 +11,11 @@ import InputCode from "./screens/InputCode";
 import ChatScreen from "./screens/ChatScreen";
 import TabNavigation from "./screens/TabNavigation";
 import HomeScreen from "./screens/HomeScreen";
+import QuestionScreen from "./screens/QuestionScreen";
+import TestQuizScreen from "./screens/TestQuizScreen";
+import StartQuizScreen from "./screens/StartQuizScreen";
+import TestQuestionScreen from "./screens/TestQuestionScreen";
+import AnsweredScreen from "./screens/AnsweredScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -29,6 +34,11 @@ export default function App() {
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
+          <Stack.Screen name="StartQuizScreen" component={StartQuizScreen} />
+          <Stack.Screen name="TestQuizScreen" component={TestQuizScreen} />
+          <Stack.Screen name="TestQuestionScreen" component={TestQuestionScreen} />
+          <Stack.Screen name="AnsweredScreen" component={AnsweredScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );

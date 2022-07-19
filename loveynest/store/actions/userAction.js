@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://1580-103-105-104-34.ngrok.io";
+const baseUrl = "https://4c5b-180-252-243-64.ngrok.io";
 
 // register user
 export const register = ({ email, password }) => {

@@ -16,6 +16,8 @@ import TestQuizScreen from "./screens/TestQuizScreen";
 import StartQuizScreen from "./screens/StartQuizScreen";
 import TestQuestionScreen from "./screens/TestQuestionScreen";
 import AnsweredScreen from "./screens/AnsweredScreen";
+import FormQuiz from "./screens/FormQuiz";
+import AddQuestion from "./screens/AddQuestion";
 import { Provider } from "react-redux";
 import store from "./store";
 const Stack = createNativeStackNavigator();
@@ -42,6 +44,8 @@ export default function App() {
           <Stack.Screen name="TestQuizScreen" component={TestQuizScreen} />
           <Stack.Screen name="TestQuestionScreen" component={TestQuestionScreen} />
           <Stack.Screen name="AnsweredScreen" component={AnsweredScreen} />
+          <Stack.Screen name="FormQuiz" component={FormQuiz} />
+          <Stack.Screen name="AddQuestion" component={AddQuestion} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

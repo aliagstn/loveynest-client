@@ -115,7 +115,7 @@ export default function HomeScreen({ navigation }) {
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("FormQuiz")}
           style={{ marginHorizontal: 20, marginTop: 50, marginBottom: 70 }}
         >
           <ImageBackground
@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }) {
           >
             <View
               style={style.uploadBtn}
-              onPress={() => navigation.navigate("ChatScreen")}
+              onPress={() => navigation.navigate("FormQuiz")}
             >
               <Text
                 style={{

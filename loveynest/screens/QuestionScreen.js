@@ -53,7 +53,7 @@ export default function QuestionScreen({ navigation }) {
       </View>
       <ScrollView>
         {products.map((item) => (
-          <CardQuestions product={item} navigation={navigation} keyExtractor={(item, index) => index.toString()} />
+          <CardQuestions product={item} navigation={navigation} keyExtractor={(item, index) => index} />
         ))}
       </ScrollView>
     </SafeAreaView>

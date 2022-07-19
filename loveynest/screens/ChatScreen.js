@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   Image,
+  TouchableOpacity
 } from "react-native";
 import { useCallback, useState } from "react";
 import COLORS from "../consts/colors";
@@ -12,7 +13,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import { db } from "../firebase";
 
-export default function Chat() {
+export default function Chat({navigation}) {
   const [messages, setMessages] = useState([]);
   const partnerData = {
     username: "jodohnya alia",
@@ -128,18 +129,23 @@ export default function Chat() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white}}>
-      <StatusBar translucent backgroundColor={COLORS.transparent} />
-      {/* <Button title="Add Topic" onPress={addTopic} /> */}
+      <StatusBar
+        translucent={false}
+        backgroundColor={COLORS.white}
+        barStyle="dark-content"
+      />
         <Text
           style={{
             textAlign: "center",
             fontSize: 20,
             justifyContent: "center",
-            marginTop:5
+            paddingTop:10,
+            paddingBottom:20,
           }}
         >
           {partnerData.username}
         </Text>
+        <Ionicons onPress={navigation.goBack} name="chevron-back-outline" size={30} color={"#475569"} style={{position: 'absolute', marginTop: 10, marginLeft: 10}} />
       <GiftedChat
         alwaysShowSend={true}
         showAvatarForEveryMessage={true}
@@ -170,5 +176,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginRight: 15,
-  }
+  },
 });

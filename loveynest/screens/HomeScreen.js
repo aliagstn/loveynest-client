@@ -75,7 +75,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={style.title}>Weekly Quizzes</Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("StartQuizScreen")}
           style={{ marginHorizontal: 20, marginTop: 20 }}
         >
           <ImageBackground
@@ -107,7 +107,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("ChatScreen")}
-          style={{ marginHorizontal: 20, marginTop: 50, marginBottom: 100 }}
+          style={{ marginHorizontal: 20, marginTop: 50, marginBottom: 70 }}
         >
           <ImageBackground
             style={style.cardImage}
@@ -141,6 +141,7 @@ export default function HomeScreen({ navigation }) {
 const style = StyleSheet.create({
   header: {
     paddingVertical: 20,
+    marginTop: 3,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,

@@ -24,7 +24,7 @@ export default function QuizScreen({ navigation }) {
       />
       <ScrollView>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("StartQuizScreen")}
           style={{ marginHorizontal: 20, marginTop: 50 }}
         >
           <ImageBackground
@@ -35,7 +35,7 @@ export default function QuizScreen({ navigation }) {
           >
             <View
               style={style.uploadBtn}
-              onPress={() => navigation.navigate("ChatScreen")}
+              onPress={() => navigation.navigate("StartQuizScreen")}
             >
               <Text
                 style={{
@@ -52,7 +52,7 @@ export default function QuizScreen({ navigation }) {
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("QuestionScreen")}
           style={{ marginHorizontal: 20, marginTop: 30 }}
         >
           <ImageBackground
@@ -63,7 +63,7 @@ export default function QuizScreen({ navigation }) {
           >
             <View
               style={style.uploadBtn}
-              onPress={() => navigation.navigate("ChatScreen")}
+              onPress={() => navigation.navigate("QuestionScreen")}
             >
               <Text
                 style={{
@@ -81,7 +81,7 @@ export default function QuizScreen({ navigation }) {
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() => navigation.navigate("AnsweredScreen")}
           style={{ marginHorizontal: 20, marginTop: 30 }}
         >
           <ImageBackground
@@ -92,7 +92,7 @@ export default function QuizScreen({ navigation }) {
           >
             <View
               style={style.uploadBtn}
-              onPress={() => navigation.navigate("ChatScreen")}
+              onPress={() => navigation.navigate("AnsweredScreen")}
             >
               <Text
                 style={{

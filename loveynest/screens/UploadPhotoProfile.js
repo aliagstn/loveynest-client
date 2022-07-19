@@ -143,6 +143,6 @@ const style = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 10,
+    marginLeft: 5,
   },
 });

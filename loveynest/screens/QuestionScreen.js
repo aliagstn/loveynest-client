@@ -52,9 +52,11 @@ export default function QuestionScreen({ navigation }) {
         <Text style={style.title}>Questions</Text>
       </View>
       <ScrollView>
-        {products.map((item) => (
-          <CardQuestions product={item} navigation={navigation} keyExtractor={(item, index) => index} />
-        ))}
+        {products.map((item, index) => {
+          return (
+            <CardQuestions product={item} navigation={navigation} key={index} />
+          )
+        })}
       </ScrollView>
     </SafeAreaView>
   );

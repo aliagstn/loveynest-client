@@ -6,14 +6,11 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Dimensions,
   FlatList,
   ActivityIndicator,
   Image,
-  Animated,
   ScrollView,
-  SectionList,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -25,9 +22,7 @@ const BG_IMG =
 const ITEM_MARGIN_BOTTOM = 20;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
-const ITEM_SIZE = HEIGHT_IMG + ITEM_PADDING * 2 + ITEM_MARGIN_BOTTOM;
 export default function AnsweredScreen({ navigation }) {
-
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -42,8 +37,6 @@ export default function AnsweredScreen({ navigation }) {
     }
     fetch();
   }, []);
-
-
   return (
     <SafeAreaView
       style={{
@@ -62,15 +55,26 @@ export default function AnsweredScreen({ navigation }) {
       <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
         <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
-      <ScrollView style={{ padding: 20, marginTop: 100 }}>
-        {products.map((item) => (
-          <CardAnswered
-            product={item}
-            navigation={navigation}
-            keyExtractor={(item, index) => index}
-          />
-        ))}
-      </ScrollView>
+
+      {!isLoading && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 350,
+          }}
+        >
+          <ActivityIndicator size={70} color={COLORS.dark} />
+        </View>
+      )}
+
+      {isLoading && (
+        <ScrollView style={{ padding: 20, marginTop: 100 }}>
+          {products.map((item, index) => (
+            <CardAnswered product={item} navigation={navigation} key={index} />
+          ))}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

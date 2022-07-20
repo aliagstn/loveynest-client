@@ -16,7 +16,7 @@ import data from "../data/QuestionData";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TestQuestionScreen({ navigation , route}) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+  const baseUrl = "https://8425-180-252-243-64.ngrok.io"
   // const allQuestions = data;
   const {quizId}= route.params
   const [allQuestions1, setAllQuestions1] = useState([])

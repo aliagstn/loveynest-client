@@ -51,7 +51,7 @@ const Card = ({ topic, navigation }) => {
           uri: topic.TopicCategory.imgTopic,
         }}
       >
-        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137 }}>
+        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137, borderRadius: 8 }}>
           <Text
             style={{
               color: COLORS.white,

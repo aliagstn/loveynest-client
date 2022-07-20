@@ -154,9 +154,6 @@ export const fetchAllCouples = () => {
         reject(error);
       }
     });
-  };
-};
-
 // getting User Data By Id
 // export const partnerDataFetchedSuccess = (payload) => {
 //   return {
@@ -230,7 +227,6 @@ export const getAllTopics = (access_token) => {
     });
   };
 };
-
 // get couple by id
 export const partnerDataFetchedSuccess = (payload) => {
   return {

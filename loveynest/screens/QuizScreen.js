@@ -10,6 +10,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
+
 import COLORS from "../consts/colors";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";

@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "https://3f94-180-252-243-64.ngrok.io";
+const baseUrl = "http://8ef7-103-105-104-34.ngrok.io";
 
 // register user
 export const register = ({ email, password }) => {
@@ -90,7 +90,6 @@ export const updatingUserData = ({
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(id);
         const response = await axios({
           method: "PATCH",
           url: `${baseUrl}/users/${id}`,
@@ -155,34 +154,33 @@ export const fetchAllCouples = () => {
         reject(error);
       }
     });
-  };
-};
-
+  }
+}
 // getting User Data By Id
-export const partnerDataFetchedSuccess = (payload) => {
-  return {
-    type: "partner/partnerAdded",
-    payload,
-  };
-};
-export const fetchDataPartner = (id) => {
-  return (dispatch) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: `${baseUrl}/users/${id}`,
-        });
-        //   console.log(response.data.data)
-        await dispatch(partnerDataFetchedSuccess(response.data.data));
-        resolve(response.data.data);
-      } catch (error) {
-        console.log(error);
-        reject(error);
-      }
-    });
-  };
-};
+// export const partnerDataFetchedSuccess = (payload) => {
+//   return {
+//     type: "partner/partnerAdded",
+//     payload,
+//   };
+// };
+// export const fetchDataPartner = (id) => {
+//   return (dispatch) => {
+//     return new Promise(async (resolve, reject) => {
+//       try {
+//         const response = await axios({
+//           method: "GET",
+//           url: `${baseUrl}/users/${id}`,
+//         });
+//         //   console.log(response.data.data)
+//         await dispatch(partnerDataFetchedSuccess(response.data.data));
+//         resolve(response.data.data);
+//       } catch (error) {
+//         console.log(error);
+//         reject(error);
+//       }
+//     });
+//   };
+// };
 
 //update partnerCode
 export const updatePartnerCode = (id, partnerCode, access_token) => {
@@ -229,5 +227,30 @@ export const getAllTopics = (access_token) => {
         reject(error);
       }
     });
+  };
+};
+// get couple by id
+export const partnerDataFetchedSuccess = (payload) => {
+  return {
+    type: "partner/partnerAdded",
+    payload,
+  };
+};
+export const getCoupleByIdToGetPartnerData = (UserId, CoupleId) => {
+  return (dispatch) => {
+    fetch(`${baseUrl}/couples/${CoupleId}/${UserId}`)
+      .then((res) =>{
+        if (!res.ok) {
+          throw new Error("internal server error");
+        }
+        return res.json();
+      })
+      .then((data) =>{
+        // console.log(data.Users[0], "<<<< dari get couple id")
+        dispatch(partnerDataFetchedSuccess(data.Users[0]))
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };

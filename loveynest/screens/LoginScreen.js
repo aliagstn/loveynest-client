@@ -90,7 +90,7 @@ export default function OnBoardScreen({ navigation }) {
           <TouchableOpacity
             style={style.btnLogin}
             onPress={logginIn}
-            // onPress={() => navigation.navigate("TabNavigation")}
+            // onPress={() => navigation.navigate("SettingScreen")}
           >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}

@@ -72,52 +72,72 @@ export default function SettingScreen({ navigation }) {
         style={{ flex: 1 }}
         source={require("../assets/setting.png")}
       ></ImageBackground>
-      <Image
-        style={style.image}
-        source={{uri:myData.photoProfile}}
-        resizeMode="contain"
-      />
-      <Image
-        style={style.image2}
-        source={{uri:partnerData.photoProfile}}
-        resizeMode="contain"
-      />
+
+      <View style={{ height: 50, top: -40}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            paddingHorizontal: 20,
+          }}
+        >
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <Image
+              style={style.image}
+              source={{uri:myData.photoProfile}}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "700",
+                color: COLORS.dark,
+              }}
+            >
+              {myData.nickname}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <Image
+              style={style.image}
+              source={{uri:partnerData.photoProfile}}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "700",
+                color: COLORS.dark,
+              }}
+            >
+              {partnerData.nickname}
+            </Text>
+          </View>
+        </View>
+      </View>
+
       <View
         style={{
           flex: 2,
+          
         }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text
-            style={{
-              marginTop: 70,
-              marginLeft: 80,
-              fontSize: 22,
-              fontWeight: "700",
-              color: COLORS.dark,
-            }}
-          >
-            {myData.nickname}
-          </Text>
-          <Text
-            style={{
-              marginTop: 70,
-              marginRight: 80,
-              fontSize: 22,
-              fontWeight: "700",
-              color: COLORS.dark,
-            }}
-          >
-            {partnerData.nickname}
-          </Text>
-        </View>
-
-        <TouchableOpacity style={[style.btn, { marginTop: 35 }]}>
-          <Ionicons name="logo-instagram" color={COLORS.dark} size={40} style={style.icon} />
+        <TouchableOpacity style={[style.btn, { marginTop: 75 }]}>
+          <Ionicons
+            name="logo-instagram"
+            color={COLORS.dark}
+            size={40}
+            style={style.icon}
+          />
           <Text style={style.fontSetting}>Follow us on Instagram</Text>
         </TouchableOpacity>
         <TouchableOpacity style={style.btn}>
-          <Ionicons name="logo-facebook" color={COLORS.dark} size={40} style={style.icon} />
+          <Ionicons
+            name="logo-facebook"
+            color={COLORS.dark}
+            size={40}
+            style={style.icon}
+          />
           <Text style={style.fontSetting}>Follow us on Facebook</Text>
         </TouchableOpacity>
         <TouchableOpacity style={style.btn} onPress={alertFirst}>
@@ -125,7 +145,12 @@ export default function SettingScreen({ navigation }) {
           <Text style={style.fontSetting}>Unpaired with Partner</Text>
         </TouchableOpacity>
         <TouchableOpacity style={style.btn}>
-          <Ionicons name="log-out-outline" color={COLORS.dark} size={40} style={style.icon} />
+          <Ionicons
+            name="log-out-outline"
+            color={COLORS.dark}
+            size={40}
+            style={style.icon}
+          />
           <Text style={style.fontSetting}>Log out</Text>
         </TouchableOpacity>
       </View>
@@ -137,33 +162,18 @@ const style = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
-    marginTop: 210,
-    marginLeft: 65,
     borderRadius: 70,
-    position: "absolute",
+    // position: "absolute",
     borderColor: "#FFF",
     borderWidth: 3.5,
   },
   image2: {
     width: 100,
     height: 100,
-    marginTop: 210,
-    marginLeft: 225,
     borderRadius: 70,
-    position: "absolute",
+    // position: "absolute",
     borderColor: "#FFF",
     borderWidth: 3.5,
-  },
-  imageDan: {
-    width: 40,
-    height: 40,
-    marginTop: 230,
-    marginLeft: 175,
-    borderRadius: 70,
-    position: "absolute",
-    borderColor: "#FFF",
-    borderWidth: 1.5,
-    backgroundColor: "#FFF",
   },
   btn: {
     backgroundColor: "#F7F8F9",
@@ -181,6 +191,6 @@ const style = StyleSheet.create({
   },
   icon: {
     marginVertical: 10,
-    marginHorizontal: 20
-  }
+    marginHorizontal: 20,
+  },
 });

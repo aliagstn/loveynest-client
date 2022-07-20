@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,26 +12,33 @@ import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import { db } from "../firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Chat({navigation}) {
   const [messages, setMessages] = useState([]);
-  const partnerData = {
-    username: "jodohnya alia",
-    avatar:
-      "https://i.pinimg.com/736x/70/0d/ab/700dabcf93f059fec3cd14ba753236af--male-fairy-baby-boys-names.jpg",
-    CoupleId: 1,
-    id: 2,
-  };
-  const myData = {
-    username: "alia",
-    avatar:
-      "https://i.pinimg.com/736x/b3/d1/cb/b3d1cb62b14c9bdd4400105ca99321df.jpg",
-    CoupleId: 1,
-    id: 1,
-  };
-  useLayoutEffect(() => {
-    const unsubscribe = db
-      .collection(`chat-couple-${myData.CoupleId}`)
+  const [myData, setMyData] = useState({})
+  const [partnerData, setPartnerData] = useState({})
+  const [coupleid, setcoupleid] = useState(0)
+  const gettingData = async () => {
+    try {
+      const dataForMyData = JSON.parse(await AsyncStorage.getItem("myData"))
+      const dataForPartnerData = JSON.parse(await AsyncStorage.getItem("partnerData"))
+      const idForCouple = JSON.parse(await AsyncStorage.getItem("CoupleId"))
+      setcoupleid(idForCouple)
+      setMyData({
+        username: dataForMyData.nickname,
+        avatar: dataForMyData.photoProfile,
+        id: +dataForMyData.id,
+        CoupleId: dataForMyData.CoupleId
+      })
+      setPartnerData({
+        username: dataForPartnerData.nickname,
+        avatar: dataForPartnerData.photoProfile,
+        id: +dataForPartnerData.id,
+        CoupleId: dataForPartnerData.CoupleId
+      })
+      const unsubscribe = db
+      .collection(`chat-couple-${idForCouple}`)
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) =>
         setMessages(
@@ -44,6 +51,15 @@ export default function Chat({navigation}) {
         )
       );
     return unsubscribe;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // useEffect(async () => {
+  //   gettingData()
+  // })
+  useLayoutEffect( () => {
+    gettingData()    
   }, []);
 
   const onSend = useCallback((messages = []) => {
@@ -52,7 +68,7 @@ export default function Chat({navigation}) {
       GiftedChat.append(previousMessages, messages)
     );
     const { _id, createdAt, text, user } = messages[0];
-    db.collection(`chat-couple-${myData.CoupleId}`).add({
+    db.collection(`chat-couple-${coupleid}`).add({
       _id,
       createdAt,
       text,
@@ -60,25 +76,7 @@ export default function Chat({navigation}) {
     });
   }, []);
 
-  const addTopic = (e) => {
-    e.preventDefault();
-    console.log("test");
-    const topic = {
-      topicId: 1,
-      topic:
-        "Which one of these objects reminds you most of me: An umbrella, light bulb, cell phone, loaf of bread, or pencil. Why?",
-    };
-    db.collection(`chat-couple-${myData.CoupleId}`).add({
-      _id: topic.topicId,
-      createdAt: new Date(),
-      text: `-  ${myData.username} has recommend a topic to talk!  -\n\n${topic.topic}`,
-      user: {
-        _id: myData.id,
-        name: myData.username,
-        avatar: myData.avatar,
-      },
-    });
-  };
+  
   const editBubble = (props) => {
     if (props?.currentMessage?.text?.charAt(0) === "-") {
       return (
@@ -128,7 +126,7 @@ export default function Chat({navigation}) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white, marginTop:7}}>
       <StatusBar
         translucent={false}
         backgroundColor={COLORS.white}

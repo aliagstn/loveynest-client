@@ -26,12 +26,16 @@ export default function HomeScreen({ navigation }) {
   const [topics, setTopics] = useState([]);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [myData, setMyData] = useState({})
   useEffect(() => {
-    getDataTopics();
+    getDatas();
   }, []);
-  const getDataTopics = async () => {
+  const getDatas = async () => {
     try {
+      const userData = JSON.parse(await AsyncStorage.getItem("myData"))
+      setMyData(userData)
       const access_token = await AsyncStorage.getItem("access_token");
+      console.log(access_token, "<<< akan dikirim ke dispatch dari home screen")
       dispatch(getAllTopics(JSON.parse(access_token)))
         .then((data) => {
           setTopics(data);
@@ -57,12 +61,12 @@ export default function HomeScreen({ navigation }) {
           <Text
             style={{ color: COLORS.dark, fontSize: 20, fontWeight: "bold" }}
           >
-            Shin Hye
+            {myData.nickname}
           </Text>
         </View>
         <Image
           source={{
-            uri: "https://www.masslive.com/resizer/kNl3qvErgJ3B0Cu-WSBWFYc1B8Q=/arc-anglerfish-arc2-prod-advancelocal/public/W5HI6Y4DINDTNP76R6CLA5IWRU.jpeg",
+            uri: myData.photoProfile,
           }}
           style={style.profileImage}
         />
@@ -95,7 +99,7 @@ export default function HomeScreen({ navigation }) {
             horizontal
             data={topics}
             renderItem={({ item }) => (
-              <Card product={item} navigation={navigation} />
+              <Card topic={item} navigation={navigation} />
             )}
             keyExtractor={(item) => item.id}
           ></FlatList>
@@ -119,7 +123,7 @@ export default function HomeScreen({ navigation }) {
                 backgroundColor: "rgba(52, 52, 52, 0.65)",
                 flex: 1,
                 marginTop: 150,
-                borderRadius: 8
+                borderRadius:15
               }}
             >
               <Text
@@ -128,7 +132,7 @@ export default function HomeScreen({ navigation }) {
                   fontSize: 17,
                   fontWeight: "bold",
                   paddingHorizontal: 10,
-                  marginTop: 12,
+                  marginTop: 12
                 }}
               >
                 Prioritizing Love || 10 Questions

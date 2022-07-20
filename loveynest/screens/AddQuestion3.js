@@ -183,7 +183,7 @@ export default function AddQuestion({ navigation }) {
           style={{
             flex: 1,
             marginTop: 40,
-            paddingBottom: 40,
+            paddingBottom: 20,
             flexDirection: "row",
           }}
         >
@@ -205,6 +205,16 @@ export default function AddQuestion({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={style.btnDelete}
+          onPress={() => navigation.navigate("TabNavigation")}
+        >
+          <Text
+            style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+          >
+            Cancel Submit
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -274,5 +284,14 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 8,
+  },
+  btnDelete: {
+    height: 60,
+    backgroundColor: "#b91c1c",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    marginBottom: 40
   },
 });

@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://8ef7-103-105-104-34.ngrok.io";
+const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
 
 // register user
 export const register = ({ email, password }) => {
@@ -121,21 +121,36 @@ export const userDataFetchedSuccess = (payload) => {
 };
 export const fetchDataUser = (id) => {
   return (dispatch) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        console.log(id);
-        const response = await axios({
-          method: "GET",
-          url: `${baseUrl}/users/${id}`,
-        });
-        console.log(response.data.data, "<<<< fetch data user");
-        await dispatch(userDataFetchedSuccess(response.data.data));
-        resolve(response.data.data);
-      } catch (error) {
-        console.log(error);
-        reject(error);
+    fetch(`${baseUrl}/users/${id}`)
+    .then((res) =>{
+      if (!res.ok) {
+        throw new Error("internal server error");
       }
+      return res.json();
+    })
+    .then((data) =>{
+      console.log(data.data, "<<<< fetch data user");
+      dispatch(userDataFetchedSuccess(data.data));
+    })
+    .catch((error) => {
+      console.log(error);
     });
+    // return new Promise(async (resolve, reject) => {
+    //   try {
+    //     console.log(id);
+    //     const response = await axios({
+    //       method: "GET",
+    //       url: `${baseUrl}/users/${id}`,
+    //     });
+    //     console.log(response.data, "<<<< fetch data user");
+    //     dispatch(userDataFetchedSuccess(response.data.data));
+    //     // resolve(response.data.data);
+    //     resolve()
+    //   } catch (error) {
+    //     console.log(error);
+    //     reject(error);
+    //   }
+    // });
   };
 };
 

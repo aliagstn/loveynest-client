@@ -13,7 +13,7 @@ import { useState } from "react";
 import { db } from "../firebase";
 import axios from "axios";
 const Card = ({ topic, navigation }) => {
-  const baseUrl = "http://8ef7-103-105-104-34.ngrok.io"
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
   const addTopic = async (e) => {
     e.preventDefault();
     console.log("test");

@@ -30,7 +30,7 @@ import axios from "axios";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
-  const baseUrl = "http://8ef7-103-105-104-34.ngrok.io";
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
   const { id } = route.params;
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
@@ -39,36 +39,17 @@ export default function InputCode({ navigation, route }) {
   const [inputPartnerCode, setInputPartnerCode] = useState("");
   const [copiedText, setCopiedText] = React.useState("");
   useEffect(() => {
-    fetchUserData()
-    // dispatch(fetchDataUser(id))
-    //   .then((data) => {
-    //     // console.log(data, "<<< di input code")
-    //     setUserCode(data?.userCode);
-    //     if (data?.partnerCode) {
-    //       storeData(data);
-    //       navigation.navigate("TabNavigation");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // const intervalId = setInterval(() => {
-    // }, 1000);
-    // return () => {
-    //   clearInterval(intervalId);
-    // };
-  }, [id]);
-  const fetchUserData = async () => {
+    dispatch(fetchDataUser(id));
+  }, []);
+  useEffect(() => {
+    gettingUserData();
+  }, [userData]);
+  const gettingUserData = async () => {
     try {
-      const response = await axios({
-        method: "GET",
-        url: `${baseUrl}/users/${id}`,
-      });
-      dispatch(userDataFetchedSuccess(response.data.data));
-      const data = response.data.data;
-      console.log(data, "<<");
-      if (data?.partnerCode) {
-        await storeData(data);
+      console.log(userData, "<< di use effect ke2");
+      setUserCode(userData.userCode);
+      if (userData?.partnerCode) {
+        await storeData();
         navigation.navigate("TabNavigation");
       }
     } catch (error) {
@@ -83,46 +64,47 @@ export default function InputCode({ navigation, route }) {
       const access_token = JSON.parse(
         await AsyncStorage.getItem("access_token")
       );
+      console.log(inputPartnerCode);
+      const partnerCode = inputPartnerCode;
       const response = await axios({
         method: "PATCH",
         url: `${baseUrl}/users/input/${id}`,
         data: {
-          inputPartnerCode,
+          partnerCode,
         },
         headers: {
           access_token,
         },
       });
       const data = response.data.data;
-      await storeData(data);
+      await storeData();
       navigation.navigate("TabNavigation");
     } catch (error) {
       console.log(error);
     }
   };
-  const storeData = async (userInformation) => {
+  const storeData = async () => {
     try {
-      console.log(userInformation, "user information");
-      await AsyncStorage.setItem(
-        "CoupleId",
-        JSON.stringify(userInformation.CoupleId)
+      console.log(userData, "user information");
+      await AsyncStorage.setItem("CoupleId", JSON.stringify(userData.CoupleId));
+      const CoupleId = userData.CoupleId;
+      const userId = userData.id;
+      const access_token = JSON.parse(
+        await AsyncStorage.getItem("access_token")
       );
-      const CoupleId = userInformation.CoupleId
-      const userId = userInformation.id
-      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
       const response = await axios({
-        method: 'GET',
+        method: "GET",
         url: `${baseUrl}/couples/${CoupleId}/${userId}`,
-        headers:{
-          access_token
-        }
+        headers: {
+          access_token,
+        },
       });
-      console.log(response.data, "hm")
+      console.log(response.data, "hm");
       const partner = response.data.Users[0];
       console.log(partner, "<<< dari input code partnerrrr");
       const jsonValuePartner = JSON.stringify(partner);
       await AsyncStorage.setItem("partnerData", jsonValuePartner);
-      const jsonValue = JSON.stringify(userInformation);
+      const jsonValue = JSON.stringify(userData);
       await AsyncStorage.setItem("myData", jsonValue);
     } catch (error) {
       console.log(error);

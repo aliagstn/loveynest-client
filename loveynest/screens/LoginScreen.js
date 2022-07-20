@@ -56,6 +56,7 @@ export default function OnBoardScreen({ navigation }) {
   const storeData = async (dataToStore) => {
     try {
       await AsyncStorage.setItem('access_token', JSON.stringify(dataToStore.access_token))
+      await AsyncStorage.setItem('userCode', JSON.stringify(dataToStore.userCode))
     } catch (error) {
       console.log(error)
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,11 +7,64 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
+  Alert
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 export default function SettingScreen({ navigation }) {
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+  const [myData, setMyData] = useState({})
+  const [partnerData, setPartnerData] = useState({})
+  const gettingData =  async () => {
+    try {
+      const dataForMyData = JSON.parse(await AsyncStorage.getItem("myData"))
+      const dataForPartnerData = JSON.parse(await AsyncStorage.getItem("partnerData"))
+      setMyData(dataForMyData)
+      setPartnerData(dataForPartnerData)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    gettingData()
+  }, [])
+
+  const upairing = async () => {
+    try {
+      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      await axios({
+        method: 'PATCH',
+        url: `${baseUrl}/delete/${myData.id}`,
+        headers:{
+          access_token
+        }
+      })
+      await AsyncStorage.removeItem("CoupleId")
+      await AsyncStorage.removeItem("myData")
+      await AsyncStorage.removeItem("partnerData")
+      
+      navigation.navigate("OnBoardScreen")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const alertFirst = () => {
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -21,12 +74,12 @@ export default function SettingScreen({ navigation }) {
       ></ImageBackground>
       <Image
         style={style.image}
-        source={require("../assets/pp.jpg")}
+        source={{uri:myData.photoProfile}}
         resizeMode="contain"
       />
       <Image
         style={style.image2}
-        source={require("../assets/pp2.jpg")}
+        source={{uri:partnerData.photoProfile}}
         resizeMode="contain"
       />
       <View
@@ -44,7 +97,7 @@ export default function SettingScreen({ navigation }) {
               color: COLORS.dark,
             }}
           >
-            John
+            {myData.nickname}
           </Text>
           <Text
             style={{
@@ -55,7 +108,7 @@ export default function SettingScreen({ navigation }) {
               color: COLORS.dark,
             }}
           >
-            Selena
+            {partnerData.nickname}
           </Text>
         </View>
 
@@ -67,7 +120,7 @@ export default function SettingScreen({ navigation }) {
           <Ionicons name="logo-facebook" color={COLORS.dark} size={40} style={style.icon} />
           <Text style={style.fontSetting}>Follow us on Facebook</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={style.btn}>
+        <TouchableOpacity style={style.btn} onPress={alertFirst}>
           <Ionicons name="heart-dislike-circle-outline" color={COLORS.dark} size={40} style={style.icon} />
           <Text style={style.fontSetting}>Unpaired with Partner</Text>
         </TouchableOpacity>

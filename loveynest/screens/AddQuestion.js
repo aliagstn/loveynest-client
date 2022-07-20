@@ -53,6 +53,7 @@ export default function AddQuestion({ navigation }) {
       setErrorOptionB(true);
     }
     const access_token= JSON.parse(await AsyncStorage.getItem("access_token"))
+    console.log(access_token, "<<<coba akses token add q")
     if (question, optionA, optionB) {
       dispatch(create(access_token))
       .then(() => {

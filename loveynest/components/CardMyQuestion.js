@@ -14,7 +14,7 @@ const CardMyQuestion = ({ data }) => {
   return (
     <View>
       <View style={style.card}>
-        <Image source={{ uri: 'https://cdn.dribbble.com/users/2417352/screenshots/15197452/media/8e61474be3aef19d7f058bf42db34e18.png?compress=1&resize=768x576&vertical=top'}} style={style.cardImage} />
+        <Image source={{ uri: data.QuizCategory.imgUrl}} style={style.cardImage} />
         <View
           style={{
             flexDirection: "row",
@@ -31,7 +31,7 @@ const CardMyQuestion = ({ data }) => {
               justifyContent: 'center'
             }}
           >
-            Makanan Kesukaan || 10 Questions
+            {data.title}
           </Text>
         </View>
       </View>
@@ -55,6 +55,7 @@ const style = StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 15,
+    backgroundColor:'blue'
   },
 });
 

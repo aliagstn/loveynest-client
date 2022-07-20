@@ -32,12 +32,12 @@ export default function SettingScreen({ navigation }) {
     gettingData()
   }, [])
 
-  const upairing = async () => {
+  const unpairing = async () => {
     try {
       const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
       await axios({
         method: 'PATCH',
-        url: `${baseUrl}/delete/${myData.id}`,
+        url: `${baseUrl}/users/delete/${myData.id}`,
         headers:{
           access_token
         }
@@ -51,19 +51,38 @@ export default function SettingScreen({ navigation }) {
       console.log(error)
     }
   }
-  const alertFirst = () => {
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
+  const alertUnpair = () => {
+    Alert.alert("Wait.. are you sure?","Please reconsider it ☹",[
+      {
+        text: "Yes",
+        onPress: () => unpairing()
+      },
+      {
+        text: "I still love them",
+        onPress: () => console.log("still love")
+      }
+    ])
+  }
+  const loggingout = async () =>{
+    try {
+      await AsyncStorage.clear()
+      navigation.navigate("OnBoardScreen")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const alertLogout = () => {
+    Alert.alert("Logout","Are you sure to logout?",[
+      {
+        text: "Yes",
+        onPress: () => loggingout()
+      },
+      {
+        text: "No",
+        onPress: () => console.log("doesnt logout")
+      }
+    ])
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -77,6 +96,18 @@ export default function SettingScreen({ navigation }) {
         source={{uri:myData.photoProfile}}
         resizeMode="contain"
       />
+      {/* <Text
+            style={{
+              marginTop: 70,
+              marginLeft: 80,
+              fontSize: 22,
+              fontWeight: "700",
+              color: COLORS.dark,
+              textAlign:'center'
+            }}
+          >
+            {myData.nickname}
+          </Text> */}
       <Image
         style={style.image2}
         source={{uri:partnerData.photoProfile}}
@@ -120,11 +151,11 @@ export default function SettingScreen({ navigation }) {
           <Ionicons name="logo-facebook" color={COLORS.dark} size={40} style={style.icon} />
           <Text style={style.fontSetting}>Follow us on Facebook</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={style.btn} onPress={alertFirst}>
+        <TouchableOpacity style={style.btn} onPress={alertUnpair}>
           <Ionicons name="heart-dislike-circle-outline" color={COLORS.dark} size={40} style={style.icon} />
-          <Text style={style.fontSetting}>Unpaired with Partner</Text>
+          <Text style={style.fontSetting}>Unpair with Partner</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={style.btn}>
+        <TouchableOpacity style={style.btn} onPress={alertLogout}>
           <Ionicons name="log-out-outline" color={COLORS.dark} size={40} style={style.icon} />
           <Text style={style.fontSetting}>Log out</Text>
         </TouchableOpacity>

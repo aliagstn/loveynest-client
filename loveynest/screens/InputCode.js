@@ -38,6 +38,7 @@ export default function InputCode({ navigation, route }) {
   const [userCode, setUserCode] = useState("");
   const [inputPartnerCode, setInputPartnerCode] = useState("");
   const [copiedText, setCopiedText] = React.useState("");
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     dispatch(fetchDataUser(id));
   }, []);
@@ -46,6 +47,7 @@ export default function InputCode({ navigation, route }) {
   }, [userData]);
   const gettingUserData = async () => {
     try {
+      setLoading(false)
       console.log(userData, "<< di use effect ke2");
       setUserCode(userData.userCode);
       if (userData?.partnerCode) {
@@ -121,6 +123,13 @@ export default function InputCode({ navigation, route }) {
   //     console.log(error)
   //   }
   // }
+  if(loading){
+    return (
+      <SafeAreaView style={{flex:1}}>
+        <Text style={{textAlign:'center'}}>Loading..</Text>
+      </SafeAreaView>
+    )
+  }
   return (
     <KeyboardAwareScrollView
       style={{

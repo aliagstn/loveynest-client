@@ -18,22 +18,34 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 const { width } = Dimensions.get("screen");
 import CardMyQuestion from "../components/CardMyQuestion";
 import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MyQuestion({ navigation }) {
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    async function fetch() {
-      try {
-        const data = await axios.get("https://server-addict.herokuapp.com/pub");
-        setProducts(data.data.data);
-        setIsLoading(true);
-      } catch (err) {
-        console.log(err);
-      }
-    }
     fetch();
+    // setIsLoading(true);
   }, []);
+  const fetch = async () => {
+    try {
+      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const data = await axios({
+        method:'GET',
+        url:`${baseUrl}/userquiz/myquiz`,
+        headers:{
+          access_token
+        }
+      });
+      console.log(data.data)
+      setProducts(data.data);
+    } catch (err) {
+      console.log(err);
+    } finally{
+      setIsLoading(true)
+    }
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar
@@ -71,6 +83,10 @@ export default function MyQuestion({ navigation }) {
 
       {isLoading && (
         <ScrollView>
+          {
+            products.length === 0 &&
+            <Text>Is empty</Text>
+          }
           {products.map((item, index) => {
             return (
               <CardMyQuestion

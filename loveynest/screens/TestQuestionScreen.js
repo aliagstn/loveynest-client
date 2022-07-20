@@ -15,8 +15,12 @@ import { COLORS, SIZES } from "../constants";
 import data from "../data/QuestionData";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function TestQuestionScreen({ navigation }) {
-  const allQuestions = data;
+export default function TestQuestionScreen({ navigation , route}) {
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+  // const allQuestions = data;
+  const {quizId}= route.params
+  const [allQuestions1, setAllQuestions1] = useState([])
+  const [allQuestions, setAllQuestions] = useState([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
   const [correctOption, setCorrectOption] = useState(null);
@@ -24,9 +28,32 @@ export default function TestQuestionScreen({ navigation }) {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
-
+  const [isLoading, setIsLoading]= useState(true)
+  useEffect(()=>{
+    getData()
+  }, [])
+  useEffect(()=>{
+    setAllQuestions(allQuestions1)
+    console.log(allQuestions, "di use effect kedua")
+    setIsLoading(false)
+  })
+  const getData = async ()=>{
+    try {
+      const res = await axios({
+        method:'GET',
+        url:`${baseUrl}/userquiz/${quizId}`
+      })
+      // console.log(res.data, "<<<< get data")
+      setAllQuestions1(res.data.UserQuestions)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      // console.log(allQuestions, "<<<< all questions finally")
+      // setIsLoading(false)
+    }
+  }
   const validateAnswer = (selectedOption) => {
-    let correct_option = allQuestions[currentQuestionIndex]["correct_option"];
+    let correct_option = allQuestions[currentQuestionIndex].answer;
     setCurrentOptionSelected(selectedOption);
     setCorrectOption(correct_option);
     setIsOptionsDisabled(true);
@@ -120,53 +147,99 @@ export default function TestQuestionScreen({ navigation }) {
     );
   };
   const renderOptions = () => {
-    return (
-      <View>
-        {allQuestions[currentQuestionIndex]?.options.map((option) => (
-          <TouchableOpacity
-            onPress={() => combineFunction(option)}
-            // onPress={handleNext}
-            disabled={isOptionsDisabled}
-            key={option}
-            style={{
-              borderWidth: 3,
-              borderColor: COLORS.secondary + "40",
-              backgroundColor: COLORS.secondary + "20",
-              height: 60,
-              borderRadius: 20,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: 20,
-              marginVertical: 10,
-            }}
-          >
-            <Text style={{ fontSize: 20, color: COLORS.white }}>{option}</Text>
-            {option == currentOptionSelected ? (
-              <View
-                // onPress={handleNext}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30 / 2,
-                  backgroundColor: COLORS.success,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="check"
+    if(isLoading){
+      return (
+        <Text> Loading </Text>
+      )
+    }else if (!isLoading){
+      return (
+        // <Text>{JSON.stringify(allQuestions[currentQuestionIndex].optionB)}</Text>
+        <View>
+          {/* {allQuestions[currentQuestionIndex]?.options.map((option) => ( */}
+            <TouchableOpacity
+              onPress={() => combineFunction(allQuestions[currentQuestionIndex]?.optionA)}
+              // onPress={handleNext}
+              disabled={isOptionsDisabled}
+              style={{
+                borderWidth: 3,
+                borderColor: COLORS.secondary + "40",
+                backgroundColor: COLORS.secondary + "20",
+                height: 60,
+                borderRadius: 20,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 20,
+                marginVertical: 10,
+              }}
+            >
+              <Text style={{ fontSize: 20, color: COLORS.white }}>{allQuestions[currentQuestionIndex]?.optionA}</Text>
+              {allQuestions[currentQuestionIndex]?.optionA == currentOptionSelected ? (
+                <View
+                  // onPress={handleNext}
                   style={{
-                    color: COLORS.white,
-                    fontSize: 20,
+                    width: 30,
+                    height: 30,
+                    borderRadius: 30 / 2,
+                    backgroundColor: COLORS.success,
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                />
-              </View>
-            ) : null}
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
+                >
+                  <MaterialCommunityIcons
+                    name="check"
+                    style={{
+                      color: COLORS.white,
+                      fontSize: 20,
+                    }}
+                  />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => combineFunction(allQuestions[currentQuestionIndex]?.optionB)}
+              // onPress={handleNext}
+              disabled={isOptionsDisabled}
+              style={{
+                borderWidth: 3,
+                borderColor: COLORS.secondary + "40",
+                backgroundColor: COLORS.secondary + "20",
+                height: 60,
+                borderRadius: 20,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 20,
+                marginVertical: 10,
+              }}
+            >
+              <Text style={{ fontSize: 20, color: COLORS.white }}>{allQuestions[currentQuestionIndex]?.optionB}</Text>
+              {allQuestions[currentQuestionIndex]?.optionB == currentOptionSelected ? (
+                <View
+                  // onPress={handleNext}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 30 / 2,
+                    backgroundColor: COLORS.success,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="check"
+                    style={{
+                      color: COLORS.white,
+                      fontSize: 20,
+                    }}
+                  />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+          {/* ))} */}
+        </View>
+      );
+    }
   };
 
   const [progress, setProgress] = useState(new Animated.Value(0));

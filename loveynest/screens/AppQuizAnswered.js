@@ -22,15 +22,22 @@ const BG_IMG =
 const ITEM_MARGIN_BOTTOM = 20;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function AppQuizAnswered({ navigation }) {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
+  const [responseUser, setresponseUser] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     async function fetch() {
       try {
-        const data = await axios.get("https://server-addict.herokuapp.com/pub");
-        setProducts(data.data.data);
-        setIsLoading(true);
+        const myData = JSON.parse(await AsyncStorage.getItem("myData"));
+        const id = myData.id;
+        const { data } = await axios.get(`${baseUrl}/appquiz/result/${id}`);
+        // console.log(data, "<<<<< data 0");
+        setresponseUser(data);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -52,11 +59,35 @@ export default function AppQuizAnswered({ navigation }) {
       />
 
       <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity style={style.headerBtn} onPress={() => navigation.navigate("TabNavigation")}>
+      <TouchableOpacity
+        style={style.headerBtn}
+        onPress={() => navigation.navigate("TabNavigation")}
+      >
         <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
 
       {!isLoading && (
+        <ScrollView style={{ padding: 20, marginTop: 100 }}>
+          {responseUser.length === 0 && <Text>Is empty again</Text>}
+          {responseUser.length !== 0 && (
+            <View>
+              {responseUser[0].responseUser.map((item, index) => (
+                <CardAppAnswered
+                  propsResponseUser={item}
+                  propsResponsePartner={responseUser[1].responseUser[index]}
+                  propsUser1={responseUser[0].Couple.Users[0]}
+                  propsUser2={responseUser[0].Couple.Users[1]}
+                  propsQuestion={responseUser[0].AppQuiz.question[index]}
+                  navigation={navigation}
+                  key={index}
+                />
+              ))}
+            </View>
+          )}
+        </ScrollView>
+      )}
+
+      {isLoading && (
         <View
           style={{
             justifyContent: "center",
@@ -66,14 +97,6 @@ export default function AppQuizAnswered({ navigation }) {
         >
           <ActivityIndicator size={70} color={COLORS.dark} />
         </View>
-      )}
-
-      {isLoading && (
-        <ScrollView style={{ padding: 20, marginTop: 100 }}>
-          {products.map((item, index) => (
-            <CardAppAnswered product={item} navigation={navigation} key={index} />
-          ))}
-        </ScrollView>
       )}
     </SafeAreaView>
   );

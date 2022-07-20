@@ -1,12 +1,4 @@
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  ImageBackground,
-  Image,
-} from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet, Dimensions, ImageBackground, Image } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 const ITEM_MARGIN_BOTTOM = 30;
@@ -14,42 +6,29 @@ const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
 const { width } = Dimensions.get("screen");
 
-const CardAppAnswered = ({ product, navigation }) => {
+const CardAppAnswered = ({ propsResponseUser, navigation, propsQuestion, propsResponsePartner, propsUser1, propsUser2 }) => {
   return (
     <View>
       <View style={[style.item]}>
-        <Text style={style.fontSize}>
-              I felt heard by my partner this week
-            </Text>
+        <Text style={style.fontSize}>{propsQuestion}</Text>
         <View style={{ flexDirection: "row" }}>
-          <Image
-            style={style.image}
-            source={require("../assets/love.png")}
-            resizeMode="contain"
-          />
-          <Image
-            style={style.image2}
-            source={require("../assets/pp.jpg")}
-            resizeMode="contain"
-          />
+          {propsResponseUser === true && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
+          {propsResponseUser === false && <Image style={style.image} source={require("../assets/sedih.png")} resizeMode="contain" />}
+          <Image style={style.image2} source={{ uri: propsUser1.photoProfile }} resizeMode="contain" />
           <View style={style.wrapText}>
-            
-            <Text style={style.fontSize2}>John <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> Agree</Text>
+            <Text style={style.fontSize2}>
+              {propsUser1.nickname} <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> {propsResponseUser && "Agree"} {!propsResponseUser && "Disagree"}
+            </Text>
           </View>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Image
-            style={style.image}
-            source={require("../assets/sedih.png")}
-            resizeMode="contain"
-          />
-          <Image
-            style={style.image2}
-            source={require("../assets/pp2.jpg")}
-            resizeMode="contain"
-          />
+          {propsResponsePartner === true && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
+          {propsResponsePartner === false && <Image style={style.image} source={require("../assets/sedih.png")} resizeMode="contain" />}
+          <Image style={style.image2} source={{ uri: propsUser2.photoProfile }} resizeMode="contain" />
           <View style={style.wrapText}>
-            <Text style={style.fontSize2}>Selena <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> Disagree</Text>
+            <Text style={style.fontSize2}>
+              {propsUser2.nickname} <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> {propsResponsePartner && "Agree"} {!propsResponsePartner && "Disagree"}
+            </Text>
           </View>
         </View>
       </View>

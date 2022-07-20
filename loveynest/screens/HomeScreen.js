@@ -39,11 +39,14 @@ export default function HomeScreen({ navigation }) {
       dispatch(getAllTopics(JSON.parse(access_token)))
         .then((data) => {
           setTopics(data);
-          setIsLoading(true);
+          // setIsLoading(true);
         })
         .catch((err) => {
           console.log(err);
-        });
+        })
+        .finally(() => {
+          setIsLoading(true)
+        })
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +58,8 @@ export default function HomeScreen({ navigation }) {
         backgroundColor={COLORS.white}
         barStyle="dark-content"
       />
-      <View style={style.header}>
+      { isLoading &&
+        <View style={style.header}>
         <View>
           <Text style={{ color: COLORS.grey }}>Halo!</Text>
           <Text
@@ -71,6 +75,7 @@ export default function HomeScreen({ navigation }) {
           style={style.profileImage}
         />
       </View>
+      }
       <ScrollView>
         <View style={{ marginHorizontal: 20 }}>
           <Text style={style.title}>Daily Conversation</Text>

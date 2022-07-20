@@ -21,7 +21,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MyQuestion({ navigation }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+  const baseUrl = "https://8425-180-252-243-64.ngrok.io";
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -30,22 +30,24 @@ export default function MyQuestion({ navigation }) {
   }, []);
   const fetch = async () => {
     try {
-      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const access_token = JSON.parse(
+        await AsyncStorage.getItem("access_token")
+      );
       const data = await axios({
-        method:'GET',
-        url:`${baseUrl}/userquiz/myquiz`,
-        headers:{
-          access_token
-        }
+        method: "GET",
+        url: `${baseUrl}/userquiz/myquiz`,
+        headers: {
+          access_token,
+        },
       });
-      console.log(data.data)
+      console.log(data.data);
       setProducts(data.data);
     } catch (err) {
       console.log(err);
-    } finally{
-      setIsLoading(true)
+    } finally {
+      setIsLoading(true);
     }
-  }
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar
@@ -83,17 +85,24 @@ export default function MyQuestion({ navigation }) {
 
       {isLoading && (
         <ScrollView>
-          {
-            products.length === 0 &&
-            <Text>Is empty</Text>
-          }
+          {products.length === 0 && (
+            <View style={{marginTop: 300}}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: COLORS.dark,
+                  paddingHorizontal: 40,
+                  lineHeight: 30
+                }}
+              >
+                It's time to make a question for your partner.
+                
+              </Text>
+            </View>
+          )}
           {products.map((item, index) => {
-            return (
-              <CardMyQuestion
-                data={item}
-                key={index}
-              />
-            );
+            return <CardMyQuestion data={item} key={index} />;
           })}
         </ScrollView>
       )}

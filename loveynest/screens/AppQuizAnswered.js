@@ -25,7 +25,7 @@ const HEIGHT_IMG = 70;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AppQuizAnswered({ navigation }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
+  const baseUrl = "https://8425-180-252-243-64.ngrok.io";
   const [responseUser, setresponseUser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

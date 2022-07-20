@@ -15,7 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 export default function SettingScreen({ navigation }) {
-  const baseUrl = "https://ac4e-180-252-243-64.ngrok.io"
+  const baseUrl = "https://8425-180-252-243-64.ngrok.io"
   const [myData, setMyData] = useState({})
   const [partnerData, setPartnerData] = useState({})
   const gettingData =  async () => {

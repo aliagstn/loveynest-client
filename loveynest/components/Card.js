@@ -8,17 +8,50 @@ import {
 } from "react-native";
 import COLORS from "../consts/colors";
 const { width } = Dimensions.get("screen");
-
-const Card = ({ product, navigation }) => {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import { db } from "../firebase";
+import axios from "axios";
+const Card = ({ topic, navigation }) => {
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+  const addTopic = async (e) => {
+    e.preventDefault();
+    console.log("test");
+    const myData = JSON.parse(await AsyncStorage.getItem("myData"))
+    const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+    console.log(myData)
+    await db.collection(`chat-couple-${myData.CoupleId}`).add({
+      _id: topic.id,
+      createdAt: new Date(),
+      text: `-  ${myData.nickname} has recommend a topic to talk!  -\n\n${topic.name}`,
+      user: {
+        _id: myData.id,
+        name: myData.nickname,
+        avatar: myData.photoProfile,
+      },
+    });
+    await axios({
+      method: 'POST',
+      url: `${baseUrl}/topics`,
+      headers:{
+        access_token
+      },
+      data:{
+        status: true,
+        TopicId: topic.id
+      }
+    })
+    navigation.navigate("ChatScreen")
+  };
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("ChatScreen")}>
+    <TouchableOpacity onPress={addTopic}>
       <ImageBackground
         style={style.cardImage}
         source={{
-          uri: "https://cdn.dribbble.com/users/2417352/screenshots/15406419/media/3643b34e27bd868030ae69fa3524961f.png",
+          uri: topic.TopicCategory.imgTopic,
         }}
       >
-        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137, borderRadius: 8 }}>
+        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137, borderRadius:15 }}>
           <Text
             style={{
               color: COLORS.white,
@@ -28,7 +61,7 @@ const Card = ({ product, navigation }) => {
               marginTop: 12
             }}
           >
-            Should partner supports each other? How should they do it?
+            {topic.name}
           </Text>
         </View>
       </ImageBackground>

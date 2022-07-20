@@ -1,27 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   SafeAreaView,
   StyleSheet,
+  Image,
   View,
   Text,
   TouchableOpacity,
+  ImageBackground,
   Dimensions,
   FlatList,
   ActivityIndicator,
-  Image,
-  ScrollView,
 } from "react-native";
 import COLORS from "../consts/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
-import CardAnswered from "../components/CardAnswered";
-const windowHeight = Dimensions.get("window").height;
-const BG_IMG =
-  "https://cdn.pixabay.com/photo/2020/05/06/06/18/blue-5136251_960_720.jpg";
-const ITEM_MARGIN_BOTTOM = 20;
-const ITEM_PADDING = 10;
-const HEIGHT_IMG = 70;
+import Ionicons from "@expo/vector-icons/Ionicons";
+const { width } = Dimensions.get("screen");
+import CardTitleAnsweredUser from "../components/CardTitleAnsweredUser";
+import { ScrollView } from "react-native-gesture-handler";
+
 export default function UserQuizAnswered({ navigation }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,30 +35,34 @@ export default function UserQuizAnswered({ navigation }) {
     fetch();
   }, []);
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#F4F4F4",
-        flexDirection: "column",
-      }}
-    >
-      <Image
-        source={{ uri: BG_IMG }}
-        style={StyleSheet.absoluteFillObject}
-        blurRadius={70}
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <StatusBar
+        translucent={false}
+        backgroundColor={COLORS.white}
+        barStyle="dark-content"
       />
-
-      <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity style={style.headerBtn} onPress={() => navigation.navigate("TabNavigation")}>
-        <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
-      </TouchableOpacity>
-
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 20,
+          paddingBottom: 15,
+          flexDirection: "row",
+        }}
+      >
+        <Ionicons
+          onPress={() => navigation.navigate("TabNavigation")}
+          name="chevron-back-outline"
+          size={30}
+          color={"#475569"}
+        />
+        <Text style={style.title}>Questions from partner</Text>
+      </View>
       {!isLoading && (
         <View
           style={{
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 350,
+            marginTop: 250,
           }}
         >
           <ActivityIndicator size={70} color={COLORS.dark} />
@@ -69,10 +70,16 @@ export default function UserQuizAnswered({ navigation }) {
       )}
 
       {isLoading && (
-        <ScrollView style={{ padding: 20, marginTop: 100 }}>
-          {products.map((item, index) => (
-            <CardAnswered product={item} navigation={navigation} key={index} />
-          ))}
+        <ScrollView>
+          {products.map((item, index) => {
+            return (
+              <CardTitleAnsweredUser
+                product={item}
+                navigation={navigation}
+                key={index}
+              />
+            );
+          })}
         </ScrollView>
       )}
     </SafeAreaView>
@@ -80,66 +87,10 @@ export default function UserQuizAnswered({ navigation }) {
 }
 
 const style = StyleSheet.create({
-  headerBtn: {
-    marginTop: 40,
-    position: "absolute",
-    marginLeft: 15,
-    height: 50,
-    width: 50,
-    backgroundColor: COLORS.white,
-    borderRadius: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "#d1d5db",
-    borderStyle: "solid",
-    borderWidth: 0.7,
-  },
-  fontSize: {
-    fontSize: 18,
-  },
-  fontSize2: {
-    fontSize: 20,
-    fontWeight: "700",
-  },
-  image: {
-    width: 50,
-    height: 50,
-    marginTop: 10,
-    marginRight: 10,
-    borderRadius: 70,
-  },
-  image2: {
-    width: 50,
-    marginTop: 10,
-    height: 50,
-    borderRadius: 70,
-    borderColor: "#d1d5db",
-    borderStyle: "solid",
-    borderWidth: 0.7,
-  },
-  wrapText: {
-    flex: 1,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#475569",
     marginLeft: 10,
-    justifyContent: "center",
-  },
-  wrapText2: {
-    flex: 1,
-    marginLeft: 4,
-    justifyContent: "center",
-  },
-  item: {
-    flexDirection: "row",
-    marginBottom: ITEM_MARGIN_BOTTOM,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    padding: ITEM_PADDING,
-    borderRadius: 15,
   },
 });

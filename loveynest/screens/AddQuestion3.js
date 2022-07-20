@@ -55,7 +55,7 @@ export default function AddQuestion({ navigation }) {
     if (question, optionA, optionB) {
       dispatch(create(access_token))
       .then(() => {
-        navigation.navigate("QuestionScreen");
+        navigation.navigate("MyQuestion");
       })
       .catch((err) => {
         console.log(err);

@@ -18,9 +18,10 @@ import data from "../data/QuizData";
 
 export default function TestQuizScreen({ navigation }) {
   const allQuestions = data;
+  let option = ["Agree", "disagree"]
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
-  const [correctOption, setCorrectOption] = useState(null);
+  const [correctOption, setCorrectOption] = useState('Agree');
   const [isOptionsDisabled, setIsOptionsDisabled] = useState(false);
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);

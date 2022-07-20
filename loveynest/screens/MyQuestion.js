@@ -16,7 +16,7 @@ import COLORS from "../consts/colors";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 const { width } = Dimensions.get("screen");
-import CardQuestions from "../components/CardQuestions";
+import CardMyQuestion from "../components/CardMyQuestion";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function MyQuestion({ navigation }) {
@@ -73,9 +73,8 @@ export default function MyQuestion({ navigation }) {
         <ScrollView>
           {products.map((item, index) => {
             return (
-              <CardQuestions
-                product={item}
-                navigation={navigation}
+              <CardMyQuestion
+                data={item}
                 key={index}
               />
             );

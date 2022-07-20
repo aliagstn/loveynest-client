@@ -15,14 +15,14 @@ import {
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
-import CardAppAnswered from "../components/CardAppAnswered";
+import CardUserAnswered from "../components/CardUserAnswered";
 const windowHeight = Dimensions.get("window").height;
 const BG_IMG =
   "https://cdn.pixabay.com/photo/2020/05/06/06/18/blue-5136251_960_720.jpg";
 const ITEM_MARGIN_BOTTOM = 20;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
-export default function AppQuizAnswered({ navigation }) {
+export default function DetailAnswerUser({ navigation }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function AppQuizAnswered({ navigation }) {
       {isLoading && (
         <ScrollView style={{ padding: 20, marginTop: 100 }}>
           {products.map((item, index) => (
-            <CardAppAnswered product={item} navigation={navigation} key={index} />
+            <CardUserAnswered product={item} navigation={navigation} key={index} />
           ))}
         </ScrollView>
       )}

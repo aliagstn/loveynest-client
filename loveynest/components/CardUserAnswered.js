@@ -13,9 +13,12 @@ const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
 const { width } = Dimensions.get("screen");
 
-const CardAnswered = ({ product, navigation }) => {
+const CardUserAnswered = ({ product, navigation }) => {
   return (
     <View style={[style.item]}>
+      <View style={{ marginHorizontal: 20 }}>
+        <Text style={style.title}>Daily Conversation</Text>
+      </View>
       <Image
         style={style.image}
         source={require("../assets/love.png")}
@@ -57,7 +60,7 @@ const style = StyleSheet.create({
     height: 50,
     borderRadius: 70,
     borderColor: "#d1d5db",
-    borderWidth: 1.,
+    borderWidth: 1,
   },
   wrapText: {
     flex: 1,
@@ -84,6 +87,11 @@ const style = StyleSheet.create({
     padding: ITEM_PADDING,
     borderRadius: 15,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#475569",
+  },
 });
 
-export default CardAnswered;
+export default CardUserAnswered;

@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "https://ba8d-180-252-243-64.ngrok.io";
+const baseUrl = "https://9bab-180-252-243-64.ngrok.io";
 
 // register user
 export const register = ({ email, password }) => {
@@ -81,11 +81,16 @@ export const uploadUserPhotoProfile = (img) => {
 };
 
 // update user nickname and profile picture
-export const updatingUserData = ({ id, nickname, photoProfile, access_token }) => {
+export const updatingUserData = ({
+  id,
+  nickname,
+  photoProfile,
+  access_token,
+}) => {
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(id)
+        console.log(id);
         const response = await axios({
           method: "PATCH",
           url: `${baseUrl}/users/${id}`,
@@ -93,9 +98,9 @@ export const updatingUserData = ({ id, nickname, photoProfile, access_token }) =
             nickname,
             photoProfile,
           },
-          headers:{
-            access_token
-          }
+          headers: {
+            access_token,
+          },
         });
         // console.log(response.data.data);
 
@@ -119,12 +124,12 @@ export const fetchDataUser = (id) => {
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(id)
+        console.log(id);
         const response = await axios({
           method: "GET",
           url: `${baseUrl}/users/${id}`,
         });
-          console.log(response.data.data, "<<<< fetch data user")
+        console.log(response.data.data, "<<<< fetch data user");
         await dispatch(userDataFetchedSuccess(response.data.data));
         resolve(response.data.data);
       } catch (error) {
@@ -135,88 +140,89 @@ export const fetchDataUser = (id) => {
   };
 };
 
-
 //get all couples
 export const fetchAllCouples = () => {
-    return (dispatch) => {
-        return new Promise(async (resolve, reject) => {
-          try {
-            const response = await axios({
-              method: "GET",
-              url: `${baseUrl}/couple`,
-            });
-            resolve(response.data.data);
-          } catch (error) {
-            console.log(error);
-            reject(error);
-          }
+  return (dispatch) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios({
+          method: "GET",
+          url: `${baseUrl}/couple`,
         });
-      };
-}
+        resolve(response.data.data);
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
+  };
+};
 
 // getting User Data By Id
 export const partnerDataFetchedSuccess = (payload) => {
-    return {
-      type: "partner/partnerAdded",
-      payload,
-    };
+  return {
+    type: "partner/partnerAdded",
+    payload,
   };
-  export const fetchDataPartner = (id) => {
-    return (dispatch) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const response = await axios({
-            method: "GET",
-            url: `${baseUrl}/users/${id}`,
-          });
-          //   console.log(response.data.data)
-          await dispatch(partnerDataFetchedSuccess(response.data.data));
-          resolve(response.data.data);
-        } catch (error) {
-          console.log(error);
-          reject(error);
-        }
-      });
-    };
+};
+export const fetchDataPartner = (id) => {
+  return (dispatch) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios({
+          method: "GET",
+          url: `${baseUrl}/users/${id}`,
+        });
+        //   console.log(response.data.data)
+        await dispatch(partnerDataFetchedSuccess(response.data.data));
+        resolve(response.data.data);
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
   };
+};
 
-
-  //update partnerCode
-  export const updatePartnerCode = (id, partnerCode) => {
-    return (dispatch) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const response = await axios({
-            method: "PATCH",
-            url: `${baseUrl}/users/input/${id}`,
-            data: {
-                partnerCode
-            }
-          });
-            // console.log(response.data.data)
-          resolve(response.data.data);
-        } catch (error) {
-          console.log(error);
-          reject(error);
-        }
-      });
-    };
+//update partnerCode
+export const updatePartnerCode = (id, partnerCode, access_token) => {
+  return (dispatch) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios({
+          method: "PATCH",
+          url: `${baseUrl}/users/input/${id}`,
+          data: {
+            partnerCode,
+          },
+          headers: {
+            access_token,
+          },
+        });
+        // console.log(response.data.data)
+        resolve(response.data.data);
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
   };
+};
 
 // get 3 Random Topics
 export const getAllTopics = (access_token) => {
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(access_token)
+        console.log(access_token);
         const response = await axios({
           method: "GET",
           url: `${baseUrl}/topics`,
-          headers:{
-            access_token
-          }
+          headers: {
+            access_token,
+          },
         });
-          console.log(response.data, "get all topics")
+        console.log(response.data, "get all topics");
         resolve(response.data);
       } catch (error) {
         console.log(error);

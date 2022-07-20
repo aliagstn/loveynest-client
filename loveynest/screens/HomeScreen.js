@@ -119,6 +119,7 @@ export default function HomeScreen({ navigation }) {
                 backgroundColor: "rgba(52, 52, 52, 0.65)",
                 flex: 1,
                 marginTop: 150,
+                borderRadius: 8
               }}
             >
               <Text
@@ -170,7 +171,7 @@ export default function HomeScreen({ navigation }) {
 
 const style = StyleSheet.create({
   header: {
-    paddingVertical: 30,
+    paddingVertical: 20,
     marginTop: 3,
     flexDirection: "row",
     justifyContent: "space-between",

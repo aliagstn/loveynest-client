@@ -55,8 +55,9 @@ export default function InputCode({ navigation, route }) {
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(userCode);
   };
-  const updatingPartnerCodeForUser = () => {
-    dispatch(updatePartnerCode(id, inputPartnerCode))
+  const updatingPartnerCodeForUser = async () => {
+    const access_token= JSON.parse(await AsyncStorage.getItem("access_token"))
+    dispatch(updatePartnerCode(id, inputPartnerCode, access_token))
       .then(() => {
         storeData(userData);
         navigation.navigate("TabNavigation");

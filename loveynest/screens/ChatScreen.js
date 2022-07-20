@@ -139,13 +139,13 @@ export default function Chat({navigation}) {
             textAlign: "center",
             fontSize: 20,
             justifyContent: "center",
-            marginTop:40,
-            paddingBottom:5,
+            marginTop:20,
+            paddingBottom:15,
           }}
         >
           {partnerData.username}
         </Text>
-        <Ionicons onPress={navigation.goBack} name="chevron-back-outline" size={30} color={"#475569"} style={{position: 'absolute', marginTop: 40, marginLeft: 10}} />
+        <Ionicons onPress={navigation.goBack} name="chevron-back-outline" size={30} color={"#475569"} style={{position: 'absolute', marginTop: 20, marginLeft: 10}} />
       <GiftedChat
         alwaysShowSend={true}
         showAvatarForEveryMessage={true}

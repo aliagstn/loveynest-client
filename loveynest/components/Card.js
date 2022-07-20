@@ -18,7 +18,7 @@ const Card = ({ product, navigation }) => {
           uri: "https://cdn.dribbble.com/users/2417352/screenshots/15406419/media/3643b34e27bd868030ae69fa3524961f.png",
         }}
       >
-        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137 }}>
+        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137, borderRadius: 8 }}>
           <Text
             style={{
               color: COLORS.white,

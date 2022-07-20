@@ -12,7 +12,7 @@ const { width } = Dimensions.get("screen");
 
 const CardTitleAnsweredUser = ({ product, navigation }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("DetailAnswerUser")}>
+    <TouchableOpacity onPress={() => navigation.navigate("DetailAnswerUser", {id: product.id})}>
       <View style={style.card}>
         <Image source={{ uri: product.QuizCategory.imgUrl}} style={style.cardImage} />
         <View

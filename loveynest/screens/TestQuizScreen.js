@@ -14,7 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import { COLORS, SIZES } from "../constants";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import data from "../data/QuizData";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TestQuizScreen({ navigation }) {
   const allQuestions = data;
@@ -26,12 +26,22 @@ export default function TestQuizScreen({ navigation }) {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
 
   const validateAnswer = (selectedOption) => {
-    let correct_option = allQuestions[currentQuestionIndex]["correct_option"];
+    let correct_option = "Agree";
     setCurrentOptionSelected(selectedOption);
     setCorrectOption(correct_option);
     setIsOptionsDisabled(true);
+    let value
+    if(selectedOption === "Agree"){
+      value = "true"
+    }else{
+      value = "false"
+    }
+    setAnswers(answers.concat([value]))
+    // console.log(selectedOption)
     if (selectedOption == correct_option) {
       // Set Score
       setScore(score + 1);
@@ -79,7 +89,28 @@ export default function TestQuizScreen({ navigation }) {
       useNativeDriver: false,
     }).start();
   };
-
+  const toSendResponse = async () => {
+    try {
+      const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const myData = JSON.parse(await AsyncStorage.getItem("myData"))
+      console.log(typeof answers[0], "<<<answers quiz")
+      await axios({
+        method:'POST',
+        url:`${baseUrl}/appquiz/result`,
+        data:{
+          responseUser: answers,
+          UserId: myData.id,
+          CoupleId: myData.CoupleId
+        },
+        headers:{
+          access_token
+        }
+      })
+      navigation.navigate("TabNavigation")
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const renderQuestion = () => {
     return (
       <View
@@ -277,7 +308,7 @@ export default function TestQuizScreen({ navigation }) {
               
               {/* Retry Quiz button */}
               <TouchableOpacity
-                onPress={() => navigation.navigate("AnsweredScreen")}
+                onPress={toSendResponse}
                 style={{
                   backgroundColor: "#384BCB",
                   padding: 20,

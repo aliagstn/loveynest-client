@@ -35,7 +35,6 @@ export default function HomeScreen({ navigation }) {
       const userData = JSON.parse(await AsyncStorage.getItem("myData"))
       setMyData(userData)
       const access_token = await AsyncStorage.getItem("access_token");
-      console.log(access_token, "<<< akan dikirim ke dispatch dari home screen")
       dispatch(getAllTopics(JSON.parse(access_token)))
         .then((data) => {
           setTopics(data);

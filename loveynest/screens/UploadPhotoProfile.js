@@ -120,7 +120,7 @@ export default function UploadPhotoProfile({ navigation, route }) {
             </TouchableOpacity>
           )}
         </View>
-        {imageUploadedToCloudinary ? (
+        {imageUploadedToCloudinary && (
           <View
             style={{
               flex: 1,
@@ -139,7 +139,10 @@ export default function UploadPhotoProfile({ navigation, route }) {
               </Text>
             </TouchableOpacity>
           </View>
-        ) : (
+        )
+          }
+          {
+          (
           <View
             style={{
               flex: 1,
@@ -155,6 +158,27 @@ export default function UploadPhotoProfile({ navigation, route }) {
                 style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
               >
                 Upload
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {
+          (
+          <View
+            style={{
+              flex: 1,
+              paddingBottom: 40,
+              marginTop: 40,
+            }}
+          >
+            <TouchableOpacity
+              style={style.btnLogin}
+              onPress={uploadingPhotoProfile}
+            >
+              <Text
+                style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+              >
+                Uploading image..
               </Text>
             </TouchableOpacity>
           </View>

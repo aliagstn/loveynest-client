@@ -1,35 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  FlatList,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList, ActivityIndicator, Image, ScrollView } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import CardUserAnswered from "../components/CardUserAnswered";
 const windowHeight = Dimensions.get("window").height;
-const BG_IMG =
-  "https://cdn.pixabay.com/photo/2020/05/06/06/18/blue-5136251_960_720.jpg";
+const BG_IMG = "https://cdn.pixabay.com/photo/2020/05/06/06/18/blue-5136251_960_720.jpg";
 const ITEM_MARGIN_BOTTOM = 20;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
-export default function DetailAnswerUser({ navigation }) {
+export default function DetailAnswerUser({ navigation, route }) {
+  const { id } = route.params;
+  // console.log(id);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     async function fetch() {
       try {
-        const data = await axios.get("https://server-addict.herokuapp.com/pub");
-        setProducts(data.data.data);
+        console.log(id)
+        const { data } = await axios.get(`https://9ae4-103-105-104-34.ap.ngrok.io/userquiz/${id}`);
+        // console.log(data, "<<<<< data ");
+        setProducts(data);
         setIsLoading(true);
       } catch (err) {
         console.log(err);
@@ -45,17 +37,10 @@ export default function DetailAnswerUser({ navigation }) {
         flexDirection: "column",
       }}
     >
-      <Image
-        source={{ uri: BG_IMG }}
-        style={StyleSheet.absoluteFillObject}
-        blurRadius={70}
-      />
+      <Image source={{ uri: BG_IMG }} style={StyleSheet.absoluteFillObject} blurRadius={70} />
 
       <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity
-        style={style.headerBtn}
-        onPress={() => navigation.navigate("TabNavigation")}
-      >
+      <TouchableOpacity style={style.headerBtn} onPress={() => navigation.navigate("TabNavigation")}>
         <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
 
@@ -73,15 +58,11 @@ export default function DetailAnswerUser({ navigation }) {
 
       {isLoading && (
         <ScrollView style={{ padding: 20, marginTop: 100 }}>
-          <View style={{marginBottom: 20}}>
-            <Text style={style.title}>Makanan Kesukaan</Text>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={style.title}>{products.title}</Text>
           </View>
-          {products.map((item, index) => (
-            <CardUserAnswered
-              product={item}
-              navigation={navigation}
-              key={index}
-            />
+          {products?.UserQuestions.map((item, index) => (
+            <CardUserAnswered product={item} propsValuePartner={products.UserQuestions[0].valuePartner} navigation={navigation} key={index} />
           ))}
         </ScrollView>
       )}

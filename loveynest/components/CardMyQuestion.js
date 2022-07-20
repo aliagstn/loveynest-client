@@ -10,7 +10,7 @@ import {
 import COLORS from "../consts/colors";
 const { width } = Dimensions.get("screen");
 
-const CardMyQuestion = ({ product, navigation }) => {
+const CardMyQuestion = ({ data, navigation }) => {
   return (
     <View>
       <View style={style.card}>

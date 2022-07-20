@@ -1,10 +1,5 @@
 export default data = [
     {
-        question: "I felt heard by my partner this week",
-        options: ["Agree","Disagree"],
-        correct_option: "Agree"
-    },
-    {
         question: "I'm satisfied with how we resolved disagreements this week",
         options: ["Agree","Disagree"],
         correct_option: "Agree"

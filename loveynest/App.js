@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnBoardScreen from "./screens/OnBoardScreen";
@@ -30,29 +30,57 @@ import DetailAnswerUser from "./screens/DetailAnswerUser";
 import SettingScreen from "./screens/SettingScreen";
 import { Provider } from "react-redux";
 import store from "./store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  useEffect(() =>{
+    getToken()
+  },[])
+  const getToken = async () =>{
+    try {
+      let access_token = await AsyncStorage.getItem("access_token")
+      if(access_token){
+        setIsSignedIn(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="InputNameScreen" component={InputNameScreen} />
-          <Stack.Screen
-            name="UploadPhotoProfile"
-            component={UploadPhotoProfile}
-          />
-          <Stack.Screen name="InputCode" component={InputCode} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          {isSignedIn ? (
+            <>
+              <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
+              <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+              <Stack.Screen name="LoginScreen" component={LoginScreen} />
+              <Stack.Screen
+                name="InputNameScreen"
+                component={InputNameScreen}
+              />
+              <Stack.Screen
+                name="UploadPhotoProfile"
+                component={UploadPhotoProfile}
+              />
+              <Stack.Screen name="InputCode" component={InputCode} />
+            </>
+          )}
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
           <Stack.Screen name="StartQuizScreen" component={StartQuizScreen} />
           <Stack.Screen name="TestQuizScreen" component={TestQuizScreen} />
-          <Stack.Screen name="TestQuestionScreen" component={TestQuestionScreen} />
+          <Stack.Screen
+            name="TestQuestionScreen"
+            component={TestQuestionScreen}
+          />
           <Stack.Screen name="AnsweredScreen" component={AnsweredScreen} />
           <Stack.Screen name="FormQuiz" component={FormQuiz} />
           <Stack.Screen name="AddQuestion" component={AddQuestion} />
@@ -60,7 +88,10 @@ export default function App() {
           <Stack.Screen name="AddQuestion4" component={AddQuestion4} />
           <Stack.Screen name="AddQuestion5" component={AddQuestion5} />
           <Stack.Screen name="MyQuestion" component={MyQuestion} />
-          <Stack.Screen name="QuestionFromPartner" component={QuestionFromPartner} />
+          <Stack.Screen
+            name="QuestionFromPartner"
+            component={QuestionFromPartner}
+          />
           <Stack.Screen name="AppQuizAnswered" component={AppQuizAnswered} />
           <Stack.Screen name="UserQuizAnswered" component={UserQuizAnswered} />
           <Stack.Screen name="DetailAnswerUser" component={DetailAnswerUser} />

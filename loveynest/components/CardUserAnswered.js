@@ -1,12 +1,4 @@
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  ImageBackground,
-  Image,
-} from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet, Dimensions, ImageBackground, Image } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 const ITEM_MARGIN_BOTTOM = 30;
@@ -14,27 +6,17 @@ const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
 const { width } = Dimensions.get("screen");
 
-const CardUserAnswered = ({ product, navigation }) => {
+const CardUserAnswered = ({ product, propsValuePartner, navigation }) => {
   return (
     <View>
       <View style={[style.item]}>
-        <Text style={style.fontSize}>
-              Apa film horor favorit aku?
-            </Text>
+        <Text style={style.fontSize}>{product.question}</Text>
         <View style={{ flexDirection: "row" }}>
-          <Image
-            style={style.image}
-            source={require("../assets/love.png")}
-            resizeMode="contain"
-          />
-          <Image
-            style={style.image2}
-            source={require("../assets/pp.jpg")}
-            resizeMode="contain"
-          />
+          {propsValuePartner === true && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
+          {propsValuePartner === false && <Image style={style.image} source={require("../assets/smileV2.png")} resizeMode="contain" />}
+
           <View style={style.wrapText}>
-            
-            <Text style={style.fontSize2}>Pocong Mumun</Text>
+            <Text style={style.fontSize2}>{product.responsePartner}</Text>
           </View>
         </View>
       </View>
@@ -84,7 +66,6 @@ const style = StyleSheet.create({
     padding: ITEM_PADDING,
     borderRadius: 15,
   },
-  
 });
 
 export default CardUserAnswered;

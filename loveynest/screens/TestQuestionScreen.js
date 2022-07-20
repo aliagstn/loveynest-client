@@ -15,12 +15,12 @@ import { COLORS, SIZES } from "../constants";
 import data from "../data/QuestionData";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function TestQuestionScreen({ navigation , route}) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+export default function TestQuestionScreen({ navigation, route }) {
+  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
   // const allQuestions = data;
-  const {quizId}= route.params
-  const [allQuestions1, setAllQuestions1] = useState([])
-  const [allQuestions, setAllQuestions] = useState([])
+  const { quizId } = route.params;
+  const [allQuestions1, setAllQuestions1] = useState([]);
+  const [allQuestions, setAllQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
   const [correctOption, setCorrectOption] = useState(null);
@@ -28,28 +28,46 @@ export default function TestQuestionScreen({ navigation , route}) {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
-  const [isLoading, setIsLoading]= useState(true)
-  useEffect(()=>{
-    getData()
-  }, [])
-  useEffect(()=>{
-    setAllQuestions(allQuestions1)
-    console.log(allQuestions, "di use effect kedua")
-    setIsLoading(false)
-  })
-  const getData = async ()=>{
+  const [isLoading, setIsLoading] = useState(true);
+  const [answers, setAnswers] = useState([]);
+  useEffect(() => {
+    getData();
+  }, []);
+  useEffect(() => {
+    setAllQuestions(allQuestions1);
+    setIsLoading(false);
+  });
+  const getData = async () => {
     try {
       const res = await axios({
-        method:'GET',
-        url:`${baseUrl}/userquiz/${quizId}`
-      })
+        method: "GET",
+        url: `${baseUrl}/userquiz/${quizId}`,
+      });
       // console.log(res.data, "<<<< get data")
-      setAllQuestions1(res.data.UserQuestions)
+      setAllQuestions1(res.data.UserQuestions);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
       // console.log(allQuestions, "<<<< all questions finally")
       // setIsLoading(false)
+    }
+  };
+  const toSendResponse = async () => {
+    try {
+      // console.log(answers, "di another function")
+      let result = {}
+      answers.forEach((el, i) => {
+        result[`answer${i+1}`] = el
+      })
+      console.log(result, "<<<result")
+      await axios({
+        method:'PATCH',
+        url:`${baseUrl}/userquiz/${quizId}`,
+        data:result
+      })
+      navigation.navigate("AnsweredScreen")
+    } catch (error) {
+      console.log(error)
     }
   }
   const validateAnswer = (selectedOption) => {
@@ -57,10 +75,15 @@ export default function TestQuestionScreen({ navigation , route}) {
     setCurrentOptionSelected(selectedOption);
     setCorrectOption(correct_option);
     setIsOptionsDisabled(true);
+    console.log(selectedOption, "<<<selected")
+    // answers.push(selectedOption)
+    // setAnswers((answers) => [...answers, selectedOption]);
+    setAnswers(answers.concat([selectedOption]))
     if (selectedOption == correct_option) {
       // Set Score
       setScore(score + 1);
     }
+    // console.log(answers, "<<<<< answers");
     // Show Next Button
     setShowNextButton(true);
   };
@@ -89,6 +112,7 @@ export default function TestQuestionScreen({ navigation , route}) {
   };
 
   const restartQuiz = () => {
+    toSendResponse()
     setShowScoreModal(false);
 
     setCurrentQuestionIndex(0);
@@ -147,95 +171,103 @@ export default function TestQuestionScreen({ navigation , route}) {
     );
   };
   const renderOptions = () => {
-    if(isLoading){
-      return (
-        <Text> Loading </Text>
-      )
-    }else if (!isLoading){
+    if (isLoading) {
+      return <Text> Loading </Text>;
+    } else if (!isLoading) {
       return (
         // <Text>{JSON.stringify(allQuestions[currentQuestionIndex].optionB)}</Text>
         <View>
           {/* {allQuestions[currentQuestionIndex]?.options.map((option) => ( */}
-            <TouchableOpacity
-              onPress={() => combineFunction(allQuestions[currentQuestionIndex]?.optionA)}
-              // onPress={handleNext}
-              disabled={isOptionsDisabled}
-              style={{
-                borderWidth: 3,
-                borderColor: COLORS.secondary + "40",
-                backgroundColor: COLORS.secondary + "20",
-                height: 60,
-                borderRadius: 20,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingHorizontal: 20,
-                marginVertical: 10,
-              }}
-            >
-              <Text style={{ fontSize: 20, color: COLORS.white }}>{allQuestions[currentQuestionIndex]?.optionA}</Text>
-              {allQuestions[currentQuestionIndex]?.optionA == currentOptionSelected ? (
-                <View
-                  // onPress={handleNext}
+          <TouchableOpacity
+            onPress={() =>
+              combineFunction("A")
+            }
+            // onPress={handleNext}
+            disabled={isOptionsDisabled}
+            style={{
+              borderWidth: 3,
+              borderColor: COLORS.secondary + "40",
+              backgroundColor: COLORS.secondary + "20",
+              height: 60,
+              borderRadius: 20,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 20,
+              marginVertical: 10,
+            }}
+          >
+            <Text style={{ fontSize: 20, color: COLORS.white }}>
+              {allQuestions[currentQuestionIndex]?.optionA}
+            </Text>
+            {allQuestions[currentQuestionIndex]?.optionA ==
+            currentOptionSelected ? (
+              <View
+                // onPress={handleNext}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30 / 2,
+                  backgroundColor: COLORS.success,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="check"
                   style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30 / 2,
-                    backgroundColor: COLORS.success,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    color: COLORS.white,
+                    fontSize: 20,
                   }}
-                >
-                  <MaterialCommunityIcons
-                    name="check"
-                    style={{
-                      color: COLORS.white,
-                      fontSize: 20,
-                    }}
-                  />
-                </View>
-              ) : null}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => combineFunction(allQuestions[currentQuestionIndex]?.optionB)}
-              // onPress={handleNext}
-              disabled={isOptionsDisabled}
-              style={{
-                borderWidth: 3,
-                borderColor: COLORS.secondary + "40",
-                backgroundColor: COLORS.secondary + "20",
-                height: 60,
-                borderRadius: 20,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingHorizontal: 20,
-                marginVertical: 10,
-              }}
-            >
-              <Text style={{ fontSize: 20, color: COLORS.white }}>{allQuestions[currentQuestionIndex]?.optionB}</Text>
-              {allQuestions[currentQuestionIndex]?.optionB == currentOptionSelected ? (
-                <View
-                  // onPress={handleNext}
+                />
+              </View>
+            ) : null}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              combineFunction("B")
+            }
+            // onPress={handleNext}
+            disabled={isOptionsDisabled}
+            style={{
+              borderWidth: 3,
+              borderColor: COLORS.secondary + "40",
+              backgroundColor: COLORS.secondary + "20",
+              height: 60,
+              borderRadius: 20,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 20,
+              marginVertical: 10,
+            }}
+          >
+            <Text style={{ fontSize: 20, color: COLORS.white }}>
+              {allQuestions[currentQuestionIndex]?.optionB}
+            </Text>
+            {allQuestions[currentQuestionIndex]?.optionB ==
+            currentOptionSelected ? (
+              <View
+                // onPress={handleNext}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30 / 2,
+                  backgroundColor: COLORS.success,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="check"
                   style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30 / 2,
-                    backgroundColor: COLORS.success,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    color: COLORS.white,
+                    fontSize: 20,
                   }}
-                >
-                  <MaterialCommunityIcons
-                    name="check"
-                    style={{
-                      color: COLORS.white,
-                      fontSize: 20,
-                    }}
-                  />
-                </View>
-              ) : null}
-            </TouchableOpacity>
+                />
+              </View>
+            ) : null}
+          </TouchableOpacity>
           {/* ))} */}
         </View>
       );
@@ -319,10 +351,10 @@ export default function TestQuestionScreen({ navigation , route}) {
                 borderRadius: 20,
                 padding: 20,
                 alignItems: "center",
-                justifyContent: 'center'
+                justifyContent: "center",
               }}
             >
-                <View style={{ marginBottom: 20 }}>
+              <View style={{ marginBottom: 20 }}>
                 <Image
                   source={
                     score > allQuestions.length / 2
@@ -342,10 +374,19 @@ export default function TestQuestionScreen({ navigation , route}) {
                   }
                 />
               </View>
-              <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: 'center', marginTop: 20  }}>
-                {score > allQuestions.length / 2 ? "Good Job! All is well for this week." : "I think you must discuss it with your partner."}
+              <Text
+                style={{
+                  fontSize: 25,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  marginTop: 20,
+                }}
+              >
+                {score > allQuestions.length / 2
+                  ? "Good Job! All is well for this week."
+                  : "I think you must discuss it with your partner."}
               </Text>
-              
+
               {/* Retry Quiz button */}
               <TouchableOpacity
                 onPress={restartQuiz}
@@ -354,7 +395,7 @@ export default function TestQuestionScreen({ navigation , route}) {
                   padding: 20,
                   width: "100%",
                   borderRadius: 20,
-                  marginTop: 30
+                  marginTop: 30,
                 }}
               >
                 <Text

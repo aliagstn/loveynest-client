@@ -35,7 +35,7 @@ export default function AppQuizAnswered({ navigation }) {
         const myData = JSON.parse(await AsyncStorage.getItem("myData"));
         const id = myData.id;
         const { data } = await axios.get(`${baseUrl}/appquiz/result/${id}`);
-        // console.log(data, "<<<<< data 0");
+        console.log(data, "<<<<< data 0");
         setresponseUser(data);
         setIsLoading(false);
       } catch (err) {
@@ -74,10 +74,10 @@ export default function AppQuizAnswered({ navigation }) {
               {responseUser[0].responseUser.map((item, index) => (
                 <CardAppAnswered
                   propsResponseUser={item}
-                  propsResponsePartner={responseUser[1].responseUser[index]}
-                  propsUser1={responseUser[0].Couple.Users[0]}
-                  propsUser2={responseUser[0].Couple.Users[1]}
-                  propsQuestion={responseUser[0].AppQuiz.question[index]}
+                  propsResponsePartner={responseUser[1]?.responseUser[index]}
+                  propsUser1={responseUser[0]?.Couple.Users[0]}
+                  propsUser2={responseUser[0]?.Couple.Users[1]}
+                  propsQuestion={responseUser[0]?.AppQuiz.question[index]}
                   navigation={navigation}
                   key={index}
                 />

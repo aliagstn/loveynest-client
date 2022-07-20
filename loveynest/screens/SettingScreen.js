@@ -42,9 +42,7 @@ export default function SettingScreen({ navigation }) {
           access_token
         }
       })
-      await AsyncStorage.removeItem("CoupleId")
-      await AsyncStorage.removeItem("myData")
-      await AsyncStorage.removeItem("partnerData")
+      await AsyncStorage.clear()
       
       navigation.navigate("OnBoardScreen")
     } catch (error) {

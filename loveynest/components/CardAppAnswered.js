@@ -12,22 +12,22 @@ const CardAppAnswered = ({ propsResponseUser, navigation, propsQuestion, propsRe
       <View style={[style.item]}>
         <Text style={style.fontSize}>{propsQuestion}</Text>
         <View style={{ flexDirection: "row" }}>
-          {propsResponseUser === true && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
-          {propsResponseUser === false && <Image style={style.image} source={require("../assets/sedih.png")} resizeMode="contain" />}
-          <Image style={style.image2} source={{ uri: propsUser1.photoProfile }} resizeMode="contain" />
+          {propsResponseUser === "true" && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
+          {propsResponseUser === "false" && <Image style={style.image} source={require("../assets/sedih.png")} resizeMode="contain" />}
+          <Image style={style.image2} source={{ uri: propsUser1?.photoProfile }} resizeMode="contain" />
           <View style={style.wrapText}>
             <Text style={style.fontSize2}>
-              {propsUser1.nickname} <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> {propsResponseUser && "Agree"} {!propsResponseUser && "Disagree"}
+              {propsUser1?.nickname} <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> {propsResponseUser === "true" && "Agree"} {propsResponseUser === "false" && "Disagree"} {!propsResponseUser && "N/A"}
             </Text>
           </View>
         </View>
         <View style={{ flexDirection: "row" }}>
-          {propsResponsePartner === true && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
-          {propsResponsePartner === false && <Image style={style.image} source={require("../assets/sedih.png")} resizeMode="contain" />}
-          <Image style={style.image2} source={{ uri: propsUser2.photoProfile }} resizeMode="contain" />
+          {propsResponsePartner === "true" && <Image style={style.image} source={require("../assets/love.png")} resizeMode="contain" />}
+          {propsResponsePartner === "false" && <Image style={style.image} source={require("../assets/sedih.png")} resizeMode="contain" />}
+          <Image style={style.image2} source={{ uri: propsUser2?.photoProfile }} resizeMode="contain" />
           <View style={style.wrapText}>
             <Text style={style.fontSize2}>
-              {propsUser2.nickname} <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> {propsResponsePartner && "Agree"} {!propsResponsePartner && "Disagree"}
+              {propsUser2?.nickname} <Ionicons name="arrow-forward-outline" size={23} color={"#475569"} /> {propsResponsePartner === "true"  && "Agree"} {propsResponsePartner === "false"  && "Disagree"} {!propsResponsePartner && "N/A"}
             </Text>
           </View>
         </View>

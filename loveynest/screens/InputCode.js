@@ -66,7 +66,7 @@ export default function InputCode({ navigation, route }) {
       const access_token = JSON.parse(
         await AsyncStorage.getItem("access_token")
       );
-      console.log(inputPartnerCode);
+      // console.log(inputPartnerCode);
       const partnerCode = inputPartnerCode;
       const response = await axios({
         method: "PATCH",

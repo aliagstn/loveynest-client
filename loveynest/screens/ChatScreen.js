@@ -137,8 +137,8 @@ export default function Chat({navigation}) {
             textAlign: "center",
             fontSize: 20,
             justifyContent: "center",
-            paddingTop:10,
-            // paddingBottom:20,
+            marginTop:20,
+            paddingBottom:15,
           }}
         >
           {partnerData.username}

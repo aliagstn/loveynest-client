@@ -7,20 +7,91 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Image
+  Image,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from "react-native-simple-radio-button";
+import SelectDropdown from "react-native-select-dropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { create, userQuestion1, userQuizSuccess } from "../store/actions/formAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function FormQuiz({ navigation }) {
+  const userQuiz = useSelector((state) => state.form.Quiz);
+  const [answer, setAnswer] = useState("A");
   const [checked, setChecked] = useState(0);
-  var gender = ['Option A', 'Option B'];
+  var option = ["Option A", "Option B"];
+  const dispatch = useDispatch();
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [errorQuestion, setErrorQuestion] = useState(false);
+  const [errorOptionA, setErrorOptionA] = useState(false);
+  const [errorOptionB, setErrorOptionB] = useState(false);
+  const [errorQuizCategoryId, setErrorQuizCategoryId] = useState(false);
+  const [title, setTitle] = useState("");
+  const [question, setQuestion] = useState("");
+  const [optionA, setOptionA] = useState("");
+  const [optionB, setOptionB] = useState("");
+  const [QuizCategoryId, setQuizCategoryId] = useState(0);
+  const categories = [
+    "Get To Know Me",
+    "Communication",
+    "Family and Friends",
+    "Date Ideas",
+  ];
+
+  let saveState = () => {
+    dispatch(
+      userQuizSuccess({
+        title,
+        QuizCategoryId,
+      })
+    );
+    dispatch(
+      userQuestion1({
+        question,
+        optionA,
+        optionB,
+        answer,
+      })
+    );
+  };
+
+  // console.log(userQuiz, '<----------------- Quiz');
+  const createQuiz = async () => {
+    if (!title) {
+      setErrorTitle(true);
+    }
+    if (!question) {
+      setErrorQuestion(true);
+    }
+    if (!optionA) {
+      setErrorOptionA(true);
+    }
+    if (!optionB) {
+      setErrorOptionB(true);
+    }
+    const access_token= JSON.parse(await AsyncStorage.getItem("access_token"))
+    if (title, question, optionA, optionB) {
+      dispatch(create(access_token))
+      .then(() => {
+        navigation.navigate("QuestionScreen");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  };
+
+  const combineFunction = () => {
+    saveState();
+    createQuiz();
+  }
+
+  const combineFunctionAdd = () => {
+    saveState();
+    navigation.navigate("AddQuestion")
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -34,80 +105,156 @@ export default function FormQuiz({ navigation }) {
           <View>
             <Text style={style.title}>Title</Text>
           </View>
-          <TextInput
-            placeholder="Enter title quiz"
-            style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
-          />
+          {errorTitle ? (
+            <TextInput
+              placeholder="Enter your title quiz"
+              placeholderTextColor={"red"}
+              style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+              onChangeText={setTitle}
+            />
+          ) : (
+            <TextInput
+              placeholder="Enter title quiz"
+              style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+              onChangeText={setTitle}
+            />
+          )}
         </View>
         <View style={{ marginTop: 20 }}>
           <View>
             <Text style={style.title}>Question</Text>
           </View>
-          <TextInput
-            placeholder="Enter your question"
-            style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
-          />
+          {errorQuestion ? (
+            <TextInput
+              placeholder="Enter your question"
+              placeholderTextColor={"red"}
+              style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+              onChangeText={setQuestion}
+            />
+          ) : (
+            <TextInput
+              placeholder="Enter your question"
+              style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+              onChangeText={setQuestion}
+            />
+          )}
+
           <View style={{ marginTop: 10 }}>
             <Text style={style.underTitle}>Option Answer</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <TextInput
-              placeholder="Enter your option A"
-              style={[
-                style.inputContainer,
-                { marginTop: 20, marginRight: 5, fontSize: 14, flex: 1 },
-              ]}
-            />
-            <TextInput
-              placeholder="Enter your option B"
-              style={[
-                style.inputContainer,
-                { marginTop: 20, fontSize: 14, flex: 1 },
-              ]}
-            />
+            {errorOptionA ? (
+              <TextInput
+                placeholder="Enter your option A"
+                placeholderTextColor={"red"}
+                style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+                onChangeText={setOptionA}
+              />
+            ) : (
+              <TextInput
+                placeholder="Enter your option A"
+                style={[
+                  style.inputContainer,
+                  { marginTop: 20, marginRight: 5, fontSize: 14, flex: 1 },
+                ]}
+                onChangeText={setOptionA}
+              />
+            )}
+
+            {errorOptionB ? (
+              <TextInput
+                placeholder="Enter your option B"
+                placeholderTextColor={"red"}
+                style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+                onChangeText={setOptionB}
+              />
+            ) : (
+              <TextInput
+                placeholder="Enter your option B"
+                style={[
+                  style.inputContainer,
+                  { marginTop: 20, fontSize: 14, flex: 1 },
+                ]}
+                onChangeText={setOptionB}
+              />
+            )}
           </View>
           <View style={{ marginTop: 10, marginBottom: 10 }}>
             <Text style={style.underTitle}>Correct Answer</Text>
           </View>
           <View style={style.btn}>
-        {gender.map((gender, key) => {
-          return (
-            <View key={gender}>
-              {checked == key ? (
-                <TouchableOpacity style={style.btn}>
-                  <Image
-                    style={style.img}
-                    source={require('../assets/radio_checked.png')}
-                  />
-                  <Text>{gender}</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    setChecked(key);
-                  }}
-                  style={style.btn}>
-                  <Image
-                    style={style.img}
-                    source={require('../assets/radio-unchecked.png')}
-                  />
-                  <Text>{gender}</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          );
-        })}
-      </View>
+            {option.map((option, key) => {
+              return (
+                <View key={option}>
+                  {checked == key ? (
+                    <TouchableOpacity style={style.btn}>
+                      <Image
+                        style={style.img}
+                        source={require("../assets/radio_checked.png")}
+                      />
+                      <Text>{option}</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setChecked(key);
+                        if (key == 0) {
+                          setAnswer("A");
+                        } else {
+                          setAnswer("B");
+                        }
+                      }}
+                      style={style.btn}
+                    >
+                      <Image
+                        style={style.img}
+                        source={require("../assets/radio-unchecked.png")}
+                      />
+                      <Text>{option}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              );
+            })}
+          </View>
         </View>
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40, flexDirection: 'row' }}>
-          <TouchableOpacity style={style.btnAdd} onPress={() => navigation.navigate("AddQuestion")}>
+        <View style={{ marginTop: 20 }}>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={style.underTitle}>Category</Text>
+          </View>
+          <SelectDropdown
+            data={categories}
+            onSelect={(selectedItem, index) => {
+              // console.log(selectedItem, index);
+              setQuizCategoryId(index + 1);
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              return selectedItem;
+            }}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            marginTop: 40,
+            paddingBottom: 40,
+            flexDirection: "row",
+          }}
+        >
+          <TouchableOpacity
+            style={style.btnAdd}
+            onPress={() => combineFunctionAdd()}
+          >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >
               Add Question
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.btnSubmit} onPress={() => navigation.navigate("QuestionScreen")}>
+          <TouchableOpacity style={style.btnSubmit} onPress={() => combineFunction()}>
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >
@@ -162,7 +309,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    marginLeft: 10
+    marginLeft: 10,
   },
   btnAdd: {
     height: 60,
@@ -170,10 +317,10 @@ const style = StyleSheet.create({
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
   radio: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   img: {
     height: 20,
@@ -181,8 +328,8 @@ const style = StyleSheet.create({
     marginHorizontal: 5,
   },
   btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
   },
 });

@@ -7,20 +7,66 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Image
+  Image,
 } from "react-native";
 import COLORS from "../consts/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from "react-native-simple-radio-button";
+import { useDispatch, useSelector } from "react-redux";
+import { create, userQuestion5 } from "../store/actions/formAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function AddQuestion5({ navigation }) {
+export default function AddQuestion({ navigation }) {
+  const userQuiz = useSelector((state) => state.form.Quiz);
+  const [answer, setAnswer] = useState("A");
   const [checked, setChecked] = useState(0);
-  var gender = ['Option A', 'Option B'];
+  var option = ["Option A", "Option B"];
+  const dispatch = useDispatch();
+  const [errorQuestion, setErrorQuestion] = useState(false);
+  const [errorOptionA, setErrorOptionA] = useState(false);
+  const [errorOptionB, setErrorOptionB] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [optionA, setOptionA] = useState("");
+  const [optionB, setOptionB] = useState("");
+
+  let saveState = () => {
+    dispatch(
+      userQuestion5({
+        question,
+        optionA,
+        optionB,
+        answer,
+      })
+    );
+  };
+
+  // console.log(userQuiz, '<----------------- Quiz');
+  const createQuiz = async () => {
+    if (!question) {
+      setErrorQuestion(true);
+    }
+    if (!optionA) {
+      setErrorOptionA(true);
+    }
+    if (!optionB) {
+      setErrorOptionB(true);
+    }
+    const access_token= JSON.parse(await AsyncStorage.getItem("access_token"))
+    if (question, optionA, optionB) {
+      dispatch(create(access_token))
+      .then(() => {
+        navigation.navigate("QuestionScreen");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  };
+
+  const combineFunction = () => {
+    saveState();
+    createQuiz();
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -30,68 +76,109 @@ export default function AddQuestion5({ navigation }) {
       <ScrollView
         style={{ paddingHorizontal: 20, paddingTop: 20, marginTop: 115 }}
       >
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 10 }}>
           <View>
             <Text style={style.title}>Question</Text>
           </View>
-          <TextInput
-            placeholder="Enter your question"
-            style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
-          />
+          {errorQuestion ? (
+            <TextInput
+              placeholder="Enter your question"
+              placeholderTextColor={"red"}
+              style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+              onChangeText={setQuestion}
+            />
+          ) : (
+            <TextInput
+              placeholder="Enter your question"
+              style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+              onChangeText={setQuestion}
+            />
+          )}
+
           <View style={{ marginTop: 10 }}>
             <Text style={style.underTitle}>Option Answer</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <TextInput
-              placeholder="Enter your option A"
-              style={[
-                style.inputContainer,
-                { marginTop: 20, marginRight: 5, fontSize: 14, flex: 1 },
-              ]}
-            />
-            <TextInput
-              placeholder="Enter your option B"
-              style={[
-                style.inputContainer,
-                { marginTop: 20, fontSize: 14, flex: 1 },
-              ]}
-            />
+            {errorOptionA ? (
+              <TextInput
+                placeholder="Enter your option A"
+                placeholderTextColor={"red"}
+                style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+                onChangeText={setOptionA}
+              />
+            ) : (
+              <TextInput
+                placeholder="Enter your option A"
+                style={[
+                  style.inputContainer,
+                  { marginTop: 20, marginRight: 5, fontSize: 14, flex: 1 },
+                ]}
+                onChangeText={setOptionA}
+              />
+            )}
+
+            {errorOptionB ? (
+              <TextInput
+                placeholder="Enter your option B"
+                placeholderTextColor={"red"}
+                style={[style.inputContainer, { marginTop: 20, fontSize: 16 }]}
+                onChangeText={setOptionB}
+              />
+            ) : (
+              <TextInput
+                placeholder="Enter your option B"
+                style={[
+                  style.inputContainer,
+                  { marginTop: 20, fontSize: 14, flex: 1 },
+                ]}
+                onChangeText={setOptionB}
+              />
+            )}
           </View>
           <View style={{ marginTop: 10, marginBottom: 10 }}>
             <Text style={style.underTitle}>Correct Answer</Text>
           </View>
           <View style={style.btn}>
-        {gender.map((gender, key) => {
-          return (
-            <View key={gender}>
-              {checked == key ? (
-                <TouchableOpacity style={style.btn}>
-                  <Image
-                    style={style.img}
-                    source={require('../assets/radio_checked.png')}
-                  />
-                  <Text>{gender}</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    setChecked(key);
-                  }}
-                  style={style.btn}>
-                  <Image
-                    style={style.img}
-                    source={require('../assets/radio-unchecked.png')}
-                  />
-                  <Text>{gender}</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          );
-        })}
-      </View>
+            {option.map((option, key) => {
+              return (
+                <View key={option}>
+                  {checked == key ? (
+                    <TouchableOpacity style={style.btn}>
+                      <Image
+                        style={style.img}
+                        source={require("../assets/radio_checked.png")}
+                      />
+                      <Text>{option}</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setChecked(key);
+                        if (key == 0) {
+                          setAnswer("A");
+                        } else {
+                          setAnswer("B");
+                        }
+                      }}
+                      style={style.btn}
+                    >
+                      <Image
+                        style={style.img}
+                        source={require("../assets/radio-unchecked.png")}
+                      />
+                      <Text>{option}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              );
+            })}
+          </View>
         </View>
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40}}>
-          <TouchableOpacity style={style.btnSubmit} onPress={() => navigation.navigate("QuestionScreen")}>
+        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+          <TouchableOpacity
+            style={style.btnSubmit}
+            onPress={() => combineFunction()}
+          >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >
@@ -146,9 +233,18 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
+    marginLeft: 10,
+  },
+  btnAdd: {
+    height: 60,
+    backgroundColor: "#384BCB",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
   },
   radio: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   img: {
     height: 20,
@@ -156,8 +252,8 @@ const style = StyleSheet.create({
     marginHorizontal: 5,
   },
   btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
   },
 });

@@ -175,7 +175,7 @@ export default function HomeScreen({ navigation }) {
 
 const style = StyleSheet.create({
   header: {
-    paddingVertical: 30,
+    paddingVertical: 20,
     marginTop: 3,
     flexDirection: "row",
     justifyContent: "space-between",

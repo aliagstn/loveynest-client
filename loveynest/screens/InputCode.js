@@ -30,7 +30,7 @@ import axios from "axios";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
+  const baseUrl = "https://ac4e-180-252-243-64.ngrok.io";
   const { id } = route.params;
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);

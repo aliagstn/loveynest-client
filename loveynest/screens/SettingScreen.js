@@ -15,7 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 export default function SettingScreen({ navigation }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
+  const baseUrl = "https://ac4e-180-252-243-64.ngrok.io"
   const [myData, setMyData] = useState({})
   const [partnerData, setPartnerData] = useState({})
   const gettingData =  async () => {
@@ -32,12 +32,12 @@ export default function SettingScreen({ navigation }) {
     gettingData()
   }, [])
 
-  const upairing = async () => {
+  const unpairing = async () => {
     try {
       const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
       await axios({
         method: 'PATCH',
-        url: `${baseUrl}/delete/${myData.id}`,
+        url: `${baseUrl}/users/delete/${myData.id}`,
         headers:{
           access_token
         }

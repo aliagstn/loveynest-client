@@ -14,7 +14,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import SelectDropdown from "react-native-select-dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { create, userQuestion1, userQuizSuccess } from "../store/actions/formAction";
+import {
+  create,
+  userQuestion1,
+  userQuizSuccess,
+} from "../store/actions/formAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function FormQuiz({ navigation }) {
@@ -71,27 +75,27 @@ export default function FormQuiz({ navigation }) {
     if (!optionB) {
       setErrorOptionB(true);
     }
-    const access_token= JSON.parse(await AsyncStorage.getItem("access_token"))
-    if (title, question, optionA, optionB) {
+    const access_token = JSON.parse(await AsyncStorage.getItem("access_token"));
+    if ((title, question, optionA, optionB)) {
       dispatch(create(access_token))
-      .then(() => {
-        navigation.navigate("MyQuestion");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then(() => {
+          navigation.navigate("MyQuestion");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   const combineFunction = () => {
     saveState();
     createQuiz();
-  }
+  };
 
   const combineFunctionAdd = () => {
     saveState();
-    navigation.navigate("AddQuestion")
-  }
+    navigation.navigate("AddQuestion");
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor={COLORS.transparent} />
@@ -240,7 +244,7 @@ export default function FormQuiz({ navigation }) {
           style={{
             flex: 1,
             marginTop: 40,
-            paddingBottom: 40,
+            paddingBottom: 20,
             flexDirection: "row",
           }}
         >
@@ -254,7 +258,10 @@ export default function FormQuiz({ navigation }) {
               Add Question
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.btnSubmit} onPress={() => combineFunction()}>
+          <TouchableOpacity
+            style={style.btnSubmit}
+            onPress={() => combineFunction()}
+          >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
             >
@@ -262,6 +269,16 @@ export default function FormQuiz({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={style.btnDelete}
+          onPress={() => navigation.navigate("TabNavigation")}
+        >
+          <Text
+            style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+          >
+            Cancel Submit
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -310,6 +327,15 @@ const style = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     marginLeft: 10,
+  },
+  btnDelete: {
+    height: 60,
+    backgroundColor: "#b91c1c",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    marginBottom: 40
   },
   btnAdd: {
     height: 60,

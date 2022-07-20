@@ -123,6 +123,7 @@ export default function HomeScreen({ navigation }) {
                 backgroundColor: "rgba(52, 52, 52, 0.65)",
                 flex: 1,
                 marginTop: 150,
+                borderRadius:15
               }}
             >
               <Text
@@ -131,7 +132,7 @@ export default function HomeScreen({ navigation }) {
                   fontSize: 17,
                   fontWeight: "bold",
                   paddingHorizontal: 10,
-                  marginTop: 12,
+                  marginTop: 12
                 }}
               >
                 Prioritizing Love || 10 Questions

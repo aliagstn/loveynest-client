@@ -13,7 +13,7 @@ import { useState } from "react";
 import { db } from "../firebase";
 import axios from "axios";
 const Card = ({ topic, navigation }) => {
-  const baseUrl = "http://3968-103-105-104-34.ngrok.io"
+  const baseUrl = "http://8ef7-103-105-104-34.ngrok.io"
   const addTopic = async (e) => {
     e.preventDefault();
     console.log("test");
@@ -51,7 +51,7 @@ const Card = ({ topic, navigation }) => {
           uri: topic.TopicCategory.imgTopic,
         }}
       >
-        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137 }}>
+        <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.7)', flex: 1, marginTop: 137, borderRadius:15 }}>
           <Text
             style={{
               color: COLORS.white,

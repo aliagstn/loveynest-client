@@ -126,7 +126,7 @@ export default function Chat({navigation}) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white, marginTop:100}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white, marginTop:7}}>
       <StatusBar
         translucent={false}
         backgroundColor={COLORS.white}
@@ -138,12 +138,12 @@ export default function Chat({navigation}) {
             fontSize: 20,
             justifyContent: "center",
             paddingTop:10,
-            paddingBottom:20,
+            // paddingBottom:20,
           }}
         >
           {partnerData.username}
         </Text>
-        <Ionicons onPress={navigation.goBack} name="chevron-back-outline" size={30} color={"#475569"} style={{position: 'absolute', marginTop: 10, marginLeft: 10}} />
+        <Ionicons onPress={navigation.goBack} name="chevron-back-outline" size={30} color={"#475569"} style={{position: 'absolute', marginTop: 20, marginLeft: 10}} />
       <GiftedChat
         alwaysShowSend={true}
         showAvatarForEveryMessage={true}

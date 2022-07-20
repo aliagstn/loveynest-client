@@ -12,8 +12,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import { db } from "../firebase";
 import axios from "axios";
+import { baseUrl } from "../data/baseUrl";
 const Card = ({ topic, navigation }) => {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
   const addTopic = async (e) => {
     e.preventDefault();
     console.log("test");

@@ -23,9 +23,9 @@ const ITEM_MARGIN_BOTTOM = 20;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseUrl } from "../data/baseUrl";
 
 export default function AppQuizAnswered({ navigation }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
   const [responseUser, setresponseUser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
+import { baseUrl } from "../../data/baseUrl";
 
 //? create quiz
 export const create = (access_token) => {

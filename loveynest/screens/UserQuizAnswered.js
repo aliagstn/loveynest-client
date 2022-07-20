@@ -19,9 +19,9 @@ const { width } = Dimensions.get("screen");
 import CardTitleAnsweredUser from "../components/CardTitleAnsweredUser";
 import { ScrollView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseUrl } from "../data/baseUrl";
 
 export default function UserQuizAnswered({ navigation }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -85,7 +85,19 @@ export default function UserQuizAnswered({ navigation }) {
         <ScrollView>
           {
             products.length === 0 &&
-            <Text>Is empty</Text>
+            <View style={{marginTop: 300}}>
+                <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: COLORS.dark,
+                  paddingHorizontal: 40,
+                  
+                }}
+              >
+                No questions from your partner.
+              </Text>
+            </View>
           }
           {products.map((item, index) => {
             return (

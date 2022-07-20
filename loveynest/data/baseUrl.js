@@ -1,0 +1,1 @@
+export const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"

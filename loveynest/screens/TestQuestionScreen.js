@@ -14,9 +14,8 @@ import { StatusBar } from "expo-status-bar";
 import { COLORS, SIZES } from "../constants";
 import data from "../data/QuestionData";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
+import { baseUrl } from "../data/baseUrl";
 export default function TestQuestionScreen({ navigation, route }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
   // const allQuestions = data;
   const { quizId } = route.params;
   const [allQuestions1, setAllQuestions1] = useState([]);

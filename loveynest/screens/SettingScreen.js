@@ -14,8 +14,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { baseUrl } from "../data/baseUrl"; 
 export default function SettingScreen({ navigation }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io"
   const [myData, setMyData] = useState({})
   const [partnerData, setPartnerData] = useState({})
   const gettingData =  async () => {

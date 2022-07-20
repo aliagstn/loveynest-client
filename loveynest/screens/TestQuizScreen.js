@@ -15,6 +15,7 @@ import { COLORS, SIZES } from "../constants";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import data from "../data/QuizData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseUrl } from "../data/baseUrl";
 
 export default function TestQuizScreen({ navigation }) {
   const allQuestions = data;
@@ -27,7 +28,6 @@ export default function TestQuizScreen({ navigation }) {
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [answers, setAnswers] = useState([]);
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
 
   const validateAnswer = (selectedOption) => {
     let correct_option = "Agree";

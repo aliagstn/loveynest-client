@@ -27,10 +27,10 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
+import { baseUrl } from "../data/baseUrl";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
-  const baseUrl = "https://9ae4-103-105-104-34.ap.ngrok.io";
   const { id } = route.params;
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);

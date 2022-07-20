@@ -22,7 +22,7 @@ import { getAllTopics } from "../store/actions/userAction";
 
 const { width } = Dimensions.get("screen");
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   const [topics, setTopics] = useState([]);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +34,7 @@ export default function HomeScreen({ navigation }) {
     try {
       const userData = JSON.parse(await AsyncStorage.getItem("myData"))
       setMyData(userData)
+      console.log(JSON.parse(await AsyncStorage.getItem("myData")))
       const access_token = await AsyncStorage.getItem("access_token");
       dispatch(getAllTopics(JSON.parse(access_token)))
         .then((data) => {

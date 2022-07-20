@@ -27,6 +27,7 @@ export default function UploadPhotoProfile({ navigation, route }) {
     useState(false);
   const dispatch = useDispatch();
   const [theProfilePicture, setTheProfilePicture] = useState("");
+  const [isLoading, setIsLoading] = useState(null)
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -51,10 +52,12 @@ export default function UploadPhotoProfile({ navigation, route }) {
   };
 
   const uploadingPhotoProfile = () => {
+    setIsLoading(true)
     dispatch(uploadUserPhotoProfile(imgBase64))
       .then((data) => {
         setImageUploadedToCloudinary(true);
         setTheProfilePicture(data);
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log(err);
@@ -142,7 +145,7 @@ export default function UploadPhotoProfile({ navigation, route }) {
           </View>
         )
           }
-          {
+        { !isLoading && !imageUploadedToCloudinary &&
           (
           <View
             style={{
@@ -163,7 +166,7 @@ export default function UploadPhotoProfile({ navigation, route }) {
             </TouchableOpacity>
           </View>
         )}
-        {
+        {isLoading &&
           (
           <View
             style={{
@@ -174,7 +177,6 @@ export default function UploadPhotoProfile({ navigation, route }) {
           >
             <TouchableOpacity
               style={style.btnLogin}
-              onPress={uploadingPhotoProfile}
             >
               <Text
                 style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}

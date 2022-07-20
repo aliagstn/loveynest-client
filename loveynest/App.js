@@ -31,16 +31,22 @@ import SettingScreen from "./screens/SettingScreen";
 import { Provider } from "react-redux";
 import store from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import TabNavigation2 from "./screens/TabNavigation2";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isMyDataExists, setIsMyDataExists] = useState(false)
   useEffect(() =>{
     getToken()
   },[])
   const getToken = async () =>{
     try {
       let access_token = await AsyncStorage.getItem("access_token")
+      let myData = await AsyncStorage.getItem("myData")
+      if(myData){
+        setIsMyDataExists(isMyDataExists)
+      }
       if(access_token){
         setIsSignedIn(true)
       }
@@ -52,9 +58,10 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {isSignedIn ? (
+          {isSignedIn && isMyDataExists ? (
             <>
-              <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="TabNavigation" component={TabNavigation} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
             </>
           ) : (
             <>
@@ -72,8 +79,8 @@ export default function App() {
               <Stack.Screen name="InputCode" component={InputCode} />
             </>
           )}
+            <Stack.Screen name="TabNavigation2" component={TabNavigation2} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
-          <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
           <Stack.Screen name="StartQuizScreen" component={StartQuizScreen} />
           <Stack.Screen name="TestQuizScreen" component={TestQuizScreen} />

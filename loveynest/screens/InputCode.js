@@ -52,7 +52,7 @@ export default function InputCode({ navigation, route }) {
       setUserCode(userData.userCode);
       if (userData?.partnerCode) {
         await storeData();
-        navigation.navigate("TabNavigation");
+        navigation.navigate("TabNavigation2");
       }
     } catch (error) {
       console.log(error);
@@ -80,7 +80,7 @@ export default function InputCode({ navigation, route }) {
       });
       const data = response.data.data;
       await storeData();
-      navigation.navigate("TabNavigation");
+      navigation.navigate("TabNavigation2");
     } catch (error) {
       console.log(error);
     }

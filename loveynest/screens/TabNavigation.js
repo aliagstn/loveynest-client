@@ -26,13 +26,13 @@ const TabArr = [
     icon: "message-circle",
     component: ChatScreen,
   },
-  {
-    route: "Date",
-    label: "Date",
-    type: Icons.Feather,
-    icon: "calendar",
-    component: DateScreen,
-  },
+  // {
+  //   route: "Date",
+  //   label: "Date",
+  //   type: Icons.Feather,
+  //   icon: "calendar",
+  //   component: DateScreen,
+  // },
   {
     route: "Quiz",
     label: "Quiz",

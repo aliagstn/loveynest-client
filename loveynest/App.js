@@ -61,7 +61,7 @@ export default function App() {
           <Stack.Screen name="QuestionFromPartner" component={QuestionFromPartner} />
           <Stack.Screen name="AppQuizAnswered" component={AppQuizAnswered} />
           <Stack.Screen name="UserQuizAnswered" component={UserQuizAnswered} />
-          <Stack.Screen name="DetailAnswerUser" component={UserQuizAnswered} />
+          <Stack.Screen name="DetailAnswerUser" component={DetailAnswerUser} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

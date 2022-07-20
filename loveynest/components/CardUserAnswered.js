@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import COLORS from "../consts/colors";
+import Ionicons from "@expo/vector-icons/Ionicons";
 const ITEM_MARGIN_BOTTOM = 30;
 const ITEM_PADDING = 10;
 const HEIGHT_IMG = 70;
@@ -15,25 +16,27 @@ const { width } = Dimensions.get("screen");
 
 const CardUserAnswered = ({ product, navigation }) => {
   return (
-    <View style={[style.item]}>
-      <View style={{ marginHorizontal: 20 }}>
-        <Text style={style.title}>Daily Conversation</Text>
-      </View>
-      <Image
-        style={style.image}
-        source={require("../assets/love.png")}
-        resizeMode="contain"
-      />
-      <Image
-        style={style.image2}
-        source={require("../assets/pp.jpg")}
-        resizeMode="contain"
-      />
-      <View style={style.wrapText}>
+    <View>
+      <View style={[style.item]}>
         <Text style={style.fontSize}>
-          Apa makanan favorit aku kalau musim hujan
-        </Text>
-        <Text style={style.fontSize2}>Mie Ayam</Text>
+              Apa film horor favorit aku?
+            </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={style.image}
+            source={require("../assets/love.png")}
+            resizeMode="contain"
+          />
+          <Image
+            style={style.image2}
+            source={require("../assets/pp.jpg")}
+            resizeMode="contain"
+          />
+          <View style={style.wrapText}>
+            
+            <Text style={style.fontSize2}>Pocong Mumun</Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -41,7 +44,7 @@ const CardUserAnswered = ({ product, navigation }) => {
 
 const style = StyleSheet.create({
   fontSize: {
-    fontSize: 18,
+    fontSize: 20,
   },
   fontSize2: {
     fontSize: 20,
@@ -67,13 +70,7 @@ const style = StyleSheet.create({
     marginLeft: 15,
     justifyContent: "center",
   },
-  wrapText2: {
-    flex: 1,
-    marginLeft: 4,
-    justifyContent: "center",
-  },
   item: {
-    flexDirection: "row",
     marginBottom: ITEM_MARGIN_BOTTOM,
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -87,11 +84,7 @@ const style = StyleSheet.create({
     padding: ITEM_PADDING,
     borderRadius: 15,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#475569",
-  },
+  
 });
 
 export default CardUserAnswered;

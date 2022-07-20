@@ -38,7 +38,7 @@ export default function AnsweredScreen({ navigation }) {
           <ImageBackground
             style={style.cardQuiz}
             source={{
-              uri: "https://images.pexels.com/photos/6321745/pexels-photo-6321745.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+              uri: "https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
             }}
             //  blurRadius={70}
           >
@@ -64,7 +64,7 @@ export default function AnsweredScreen({ navigation }) {
           <ImageBackground
             style={style.cardQuiz}
             source={{
-              uri: "https://images.pexels.com/photos/356243/pexels-photo-356243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+              uri: "https://images.unsplash.com/photo-1564296786842-4fc88fb50485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
             }}
           >
             <View style={style.uploadBtn}>

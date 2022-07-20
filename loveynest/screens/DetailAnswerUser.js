@@ -52,7 +52,10 @@ export default function DetailAnswerUser({ navigation }) {
       />
 
       <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity style={style.headerBtn} onPress={() => navigation.navigate("TabNavigation")}>
+      <TouchableOpacity
+        style={style.headerBtn}
+        onPress={() => navigation.navigate("TabNavigation")}
+      >
         <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
       </TouchableOpacity>
 
@@ -70,8 +73,15 @@ export default function DetailAnswerUser({ navigation }) {
 
       {isLoading && (
         <ScrollView style={{ padding: 20, marginTop: 100 }}>
+          <View style={{marginBottom: 20}}>
+            <Text style={style.title}>Makanan Kesukaan</Text>
+          </View>
           {products.map((item, index) => (
-            <CardUserAnswered product={item} navigation={navigation} key={index} />
+            <CardUserAnswered
+              product={item}
+              navigation={navigation}
+              key={index}
+            />
           ))}
         </ScrollView>
       )}
@@ -141,5 +151,10 @@ const style = StyleSheet.create({
     shadowRadius: 20,
     padding: ITEM_PADDING,
     borderRadius: 15,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#1e293b",
   },
 });

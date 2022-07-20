@@ -4,6 +4,7 @@ import ChatScreen from "./ChatScreen";
 import DateScreen from "./DateScreen";
 import QuizScreen from "./QuizScreen";
 import SettingScreen from "./SettingScreen";
+import Styling from "./Styling";
 import Color from "../consts/Color";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

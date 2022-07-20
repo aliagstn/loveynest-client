@@ -39,7 +39,7 @@ const Card = ({ product, navigation }) => {
 const style = StyleSheet.create({
   cardImage: {
     height: 220,
-    width: width / 1.12,
+    width: width / 1.2,
     borderRadius: 15,
     marginRight: 20,
     overflow: "hidden",

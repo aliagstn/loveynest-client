@@ -39,8 +39,8 @@ export default function App() {
             component={UploadPhotoProfile}
           />
           <Stack.Screen name="InputCode" component={InputCode} />
-          {/* <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="ChatScreen" component={ChatScreen} /> */}
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
           <Stack.Screen name="StartQuizScreen" component={StartQuizScreen} />

@@ -75,7 +75,7 @@ export default function FormQuiz({ navigation }) {
     if (title, question, optionA, optionB) {
       dispatch(create(access_token))
       .then(() => {
-        navigation.navigate("QuestionScreen");
+        navigation.navigate("MyQuestion");
       })
       .catch((err) => {
         console.log(err);

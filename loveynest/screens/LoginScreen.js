@@ -20,7 +20,9 @@ export default function OnBoardScreen({ navigation }) {
   const userData = useSelector((state) => state.user.user)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [btnClicked, setBtnClicked] = useState(false)
   const logginIn = () => {
+    setBtnClicked(true)
     dispatch(login({email, password}))
       .then((data) => {
         // console.log(id)
@@ -86,11 +88,13 @@ export default function OnBoardScreen({ navigation }) {
             style={[style.inputContainer, { fontSize: 16 }]}
             onChangeText={setPassword}
           />
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+        {
+          btnClicked
+          ? (
+            <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
           <TouchableOpacity
-            style={style.btnLogin}
-            onPress={logginIn}
-            // onPress={() => navigation.navigate("SettingScreen")}
+            style={style.disabled}
+            disabled={true}
           >
             <Text
               style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
@@ -99,6 +103,22 @@ export default function OnBoardScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
+          )
+          : (
+            <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+          <TouchableOpacity
+            style={style.btnLogin}
+            onPress={logginIn}
+          >
+            <Text
+              style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
+            >
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+          )
+        }
       </View>
       <View
         style={style.footerContainer}
@@ -162,4 +182,12 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     color: "#384BCB",
   },
+  disabled:{
+    height: 60,
+    backgroundColor: "#384BCB",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    opacity: 0.5
+  }
 });

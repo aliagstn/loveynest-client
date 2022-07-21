@@ -235,7 +235,6 @@ export const getAllTopics = (access_token) => {
             access_token,
           },
         });
-        console.log(response.data, "get all topics");
         resolve(response.data);
       } catch (error) {
         console.log(error);

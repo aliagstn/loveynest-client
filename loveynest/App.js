@@ -30,56 +30,24 @@ import DetailAnswerUser from "./screens/DetailAnswerUser";
 import SettingScreen from "./screens/SettingScreen";
 import { Provider } from "react-redux";
 import store from "./store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import TabNavigation2 from "./screens/TabNavigation2";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const [isMyDataExists, setIsMyDataExists] = useState(false)
-  useEffect(() =>{
-    getToken()
-  },[])
-  const getToken = async () =>{
-    try {
-      let access_token = await AsyncStorage.getItem("access_token")
-      let myData = await AsyncStorage.getItem("myData")
-      if(myData){
-        setIsMyDataExists(isMyDataExists)
-      }
-      if(access_token){
-        setIsSignedIn(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {isSignedIn && isMyDataExists ? (
-            <>
-            <Stack.Screen name="TabNavigation" component={TabNavigation} />
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
-              <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-              <Stack.Screen name="LoginScreen" component={LoginScreen} />
-              <Stack.Screen
-                name="InputNameScreen"
-                component={InputNameScreen}
-              />
-              <Stack.Screen
-                name="UploadPhotoProfile"
-                component={UploadPhotoProfile}
-              />
-              <Stack.Screen name="InputCode" component={InputCode} />
-            </>
-          )}
-            <Stack.Screen name="TabNavigation2" component={TabNavigation2} />
+          <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="InputNameScreen" component={InputNameScreen} />
+          <Stack.Screen
+            name="UploadPhotoProfile"
+            component={UploadPhotoProfile}
+          />
+          <Stack.Screen name="InputCode" component={InputCode} />
+          <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
           <Stack.Screen name="StartQuizScreen" component={StartQuizScreen} />

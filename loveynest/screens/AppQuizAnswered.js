@@ -68,7 +68,22 @@ export default function AppQuizAnswered({ navigation }) {
 
       {!isLoading && (
         <ScrollView style={{ padding: 20, marginTop: 100 }}>
-          {responseUser.length === 0 && <Text>Is empty again</Text>}
+          {responseUser.length === 0 && (
+            <View style={{marginTop: 300}}>
+            <Text
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+              color: COLORS.dark,
+              paddingHorizontal: 40,
+              
+            }}
+          > You and your partner haven't answered weekly quiz .
+          </Text>
+        </View>
+          )
+          
+          }
           {responseUser.length !== 0 && (
             <View>
               {responseUser[0].responseUser.map((item, index) => (

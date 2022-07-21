@@ -18,6 +18,7 @@ const Card = ({ topic, navigation }) => {
     e.preventDefault();
     console.log("test");
     const myData = JSON.parse(await AsyncStorage.getItem("myData"))
+    console.log(myData.CoupleId, "<<<<<couple id")
     const access_token = JSON.parse(await AsyncStorage.getItem("access_token"))
     console.log(myData)
     await db.collection(`chat-couple-${myData.CoupleId}`).add({

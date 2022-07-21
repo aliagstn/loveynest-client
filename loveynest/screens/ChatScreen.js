@@ -4,7 +4,9 @@ import {
   StyleSheet,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  View,
+  ActivityIndicator
 } from "react-native";
 import { useCallback, useState } from "react";
 import COLORS from "../consts/colors";
@@ -18,24 +20,26 @@ export default function Chat({navigation}) {
   const [messages, setMessages] = useState([]);
   const [myData, setMyData] = useState({})
   const [partnerData, setPartnerData] = useState({})
-  const [coupleid, setcoupleid] = useState(0)
+  const [coupleid, setcoupleid] = useState()
+  const [isLoading, setIsLoading] = useState(true)
   const gettingData = async () => {
     try {
       const dataForMyData = JSON.parse(await AsyncStorage.getItem("myData"))
       const dataForPartnerData = JSON.parse(await AsyncStorage.getItem("partnerData"))
       const idForCouple = JSON.parse(await AsyncStorage.getItem("CoupleId"))
       setcoupleid(idForCouple)
+      console.log(idForCouple, "<<<<coupleid")
       setMyData({
         username: dataForMyData.nickname,
         avatar: dataForMyData.photoProfile,
         id: +dataForMyData.id,
-        CoupleId: dataForMyData.CoupleId
+        CoupleId: coupleid
       })
       setPartnerData({
         username: dataForPartnerData.nickname,
         avatar: dataForPartnerData.photoProfile,
         id: +dataForPartnerData.id,
-        CoupleId: dataForPartnerData.CoupleId
+        CoupleId: coupleid
       })
       const unsubscribe = db
       .collection(`chat-couple-${idForCouple}`)
@@ -53,6 +57,8 @@ export default function Chat({navigation}) {
     return unsubscribe;
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
   // useEffect(async () => {
@@ -132,6 +138,23 @@ export default function Chat({navigation}) {
         backgroundColor={COLORS.white}
         barStyle="dark-content"
       />
+      {
+        isLoading &&
+        <>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 350,
+          }}
+        >
+          <ActivityIndicator size={70} color={COLORS.dark} />
+        </View>
+        </>
+      }
+      {
+        !isLoading &&(
+          <>
         <Text
           style={{
             textAlign: "center",
@@ -157,6 +180,9 @@ export default function Chat({navigation}) {
         renderBubble={editBubble}
         renderSend={editSend}
       />
+      </>
+        )
+      }
     </SafeAreaView>
   );
 }

@@ -176,7 +176,8 @@ export default function UploadPhotoProfile({ navigation, route }) {
             }}
           >
             <TouchableOpacity
-              style={style.btnLogin}
+              style={style.disabled}
+              disabled={true}
             >
               <Text
                 style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
@@ -248,5 +249,13 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 5,
+  },
+  btnLogin: {
+    height: 60,
+    backgroundColor: "#384BCB",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    opacity:0.5
   },
 });

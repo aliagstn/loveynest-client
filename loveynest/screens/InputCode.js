@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Image,
   // KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -31,6 +32,8 @@ import { baseUrl } from "../data/baseUrl";
 
 const windowHeight = Dimensions.get("window").height;
 export default function InputCode({ navigation, route }) {
+  const BG_IMG =
+    "https://cdn.pixabay.com/photo/2020/05/06/06/18/blue-5136251_960_720.jpg";
   const { id } = route.params;
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
@@ -38,7 +41,9 @@ export default function InputCode({ navigation, route }) {
   const [userCode, setUserCode] = useState("");
   const [inputPartnerCode, setInputPartnerCode] = useState("");
   const [copiedText, setCopiedText] = React.useState("");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [pairClicked, setPairClicked] = useState(false);
+  const [times, setTimes] = useState(0)
   useEffect(() => {
     dispatch(fetchDataUser(id));
   }, []);
@@ -47,12 +52,15 @@ export default function InputCode({ navigation, route }) {
   }, [userData]);
   const gettingUserData = async () => {
     try {
-      setLoading(false)
-      console.log(userData, "<< di use effect ke2");
+      setTimes(times+1)
+      console.log(times, "<<<< TIMESSSSSSSSSSS")
       setUserCode(userData.userCode);
-      if (userData?.partnerCode) {
+      if (userData.partnerCode) {
         await storeData();
-        navigation.navigate("TabNavigation2");
+        navigation.navigate("TabNavigation");
+      } 
+      if(!userData.partnerCode && times === 1){
+        setLoading(false)
       }
     } catch (error) {
       console.log(error);
@@ -63,6 +71,7 @@ export default function InputCode({ navigation, route }) {
   };
   const updatingPartnerCodeForUser = async () => {
     try {
+      setPairClicked(true);
       const access_token = JSON.parse(
         await AsyncStorage.getItem("access_token")
       );
@@ -80,7 +89,7 @@ export default function InputCode({ navigation, route }) {
       });
       const data = response.data.data;
       await storeData();
-      navigation.navigate("TabNavigation2");
+      navigation.navigate("TabNavigation");
     } catch (error) {
       console.log(error);
     }
@@ -112,96 +121,115 @@ export default function InputCode({ navigation, route }) {
       console.log(error);
     }
   };
-  // const gettingPartnerData = async (userId, CoupleId) => {
-  //   try {
-  //     console.log(userId, CoupleId)
-  //     const response = await axios.get(`${baseUrl}/couples/${CoupleId}/${userId}`)
-  //     console.log(response.data.Users[0])
-  //     dispatch(partnerDataFetchedSuccess(response.data.Users[0]))
-  //     return response.data.Users[0]
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-  if(loading){
-    return (
-      <SafeAreaView style={{flex:1}}>
-        <Text style={{textAlign:'center'}}>Loading..</Text>
-      </SafeAreaView>
-    )
-  }
   return (
     <KeyboardAwareScrollView
       style={{
         flex: 1,
-        backgroundColor: COLORS.white,
         flexDirection: "column",
       }}
     >
       <StatusBar translucent backgroundColor={COLORS.transparent} />
-      <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
-        <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
-      </TouchableOpacity>
 
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingTop: 20,
-          marginTop: windowHeight <= 750 ? 90 : 100,
-          flex: 1,
-          marginBottom: 10,
-        }}
-      >
-        <View>
-          <Text style={style.title}>Share my code with my partner</Text>
-        </View>
-        <TextInput
-          value={userCode}
-          // value={"LV-1232672"}
-          style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
+      {loading && (
+        <Image
+          source={require("../assets/logo-comp.png")}
+          style={StyleSheet.absoluteFillObject}
+          blurRadius={70}
         />
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
-          <TouchableOpacity style={style.btnLogin} onPress={copyToClipboard}>
-            <Text
-              style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
-            >
-              Copy my code
-            </Text>
+      )}
+      {!loading && (
+        <>
+          <TouchableOpacity style={style.headerBtn} onPress={navigation.goBack}>
+            <Ionicons name="chevron-back-outline" size={30} color={"#475569"} />
           </TouchableOpacity>
-        </View>
-      </View>
-
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingTop: 10,
-          flex: 2,
-          backgroundColor: "#E8ECF4",
-          borderTopLeftRadius: 40,
-          borderTopRightRadius: 40,
-        }}
-      >
-        <View style={{ marginTop: 55 }}>
-          <Text style={style.title}>Enter my partner’s code</Text>
-        </View>
-        <TextInput
-          placeholder="Enter code"
-          style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
-          onChangeText={setInputPartnerCode}
-        />
-        <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
-          <TouchableOpacity
-            style={style.btnLogin}
-            onPress={updatingPartnerCodeForUser}
+          <View
+            style={{
+              paddingHorizontal: 20,
+              paddingTop: 20,
+              marginTop: windowHeight <= 750 ? 90 : 100,
+              flex: 1,
+              marginBottom: 10,
+            }}
           >
-            <Text
-              style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}
-            >
-              Pair with partner
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <View>
+              <Text style={style.title}>Share my code with my partner</Text>
+            </View>
+            <TextInput
+              value={userCode}
+              // value={"LV-1232672"}
+              style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
+            />
+            <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+              <TouchableOpacity
+                style={style.btnLogin}
+                onPress={copyToClipboard}
+              >
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontSize: 16,
+                    fontWeight: "600",
+                  }}
+                >
+                  Copy my code
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View
+            style={{
+              paddingHorizontal: 20,
+              paddingTop: 10,
+              flex: 2,
+              backgroundColor: "#E8ECF4",
+              borderTopLeftRadius: 40,
+              borderTopRightRadius: 40,
+            }}
+          >
+            <View style={{ marginTop: 55 }}>
+              <Text style={style.title}>Enter my partner’s code</Text>
+            </View>
+            <TextInput
+              placeholder="Enter code"
+              style={[style.inputContainer, { marginTop: 40, fontSize: 20 }]}
+              onChangeText={setInputPartnerCode}
+            />
+            {pairClicked ? (
+              <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+                <TouchableOpacity style={style.disabled} disabled={true}>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontSize: 16,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Pairing..
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ flex: 1, marginTop: 40, paddingBottom: 40 }}>
+                <TouchableOpacity
+                  style={style.btnLogin}
+                  onPress={updatingPartnerCodeForUser}
+                >
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontSize: 16,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Pair with partner
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </>
+      )}
     </KeyboardAwareScrollView>
   );
 }
@@ -247,5 +275,13 @@ const style = StyleSheet.create({
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
+  },
+  disabled: {
+    height: 60,
+    backgroundColor: "#384BCB",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    opacity: 0.5,
   },
 });
